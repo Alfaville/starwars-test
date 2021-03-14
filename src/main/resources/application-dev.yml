@@ -1,0 +1,11 @@
+logging.level.org.zalando.logbook: TRACE
+
+#  datasource:
+#    url:
+#    username: postgres
+#    password: postgres
+#    driver-class-name:
+#  jpa:
+#    show-sql: true
+#    properties.hibernate.format_sql: true
+#    hibernate.ddl-auto: none

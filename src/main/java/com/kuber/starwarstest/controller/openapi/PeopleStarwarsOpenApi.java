@@ -2,6 +2,7 @@ package com.kuber.starwarstest.controller.openapi;
 
 import com.kuber.starwarstest.controller.response.PeopleStarResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -12,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-@Tag(name = PeopleStarwarsOpenApi.TAG, description = "Analise de DNA de humanos e símios")
+@Tag(name = PeopleStarwarsOpenApi.TAG, description = "API of the Starwars people and their respective planets and species")
 public interface PeopleStarwarsOpenApi {
 
     String TAG = "People Warrior";
@@ -23,6 +24,7 @@ public interface PeopleStarwarsOpenApi {
                     @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = PeopleStarResponse.class)),
             }),
     })
-    ResponseEntity<List<PeopleStarResponse>> getAll();
+    ResponseEntity<List<PeopleStarResponse>> getAll(
+            @Parameter(required = true, description = "Field where you can choose some page") Integer page);
 
 }

@@ -8,6 +8,7 @@ The test API are in [Swagger].
 ### Stack technology
 
 * Java 11
+* Kotlin
 * Spring Boot 2
 * [Springdoc openapi]
   * springdoc-openapi java library helps automating the generation of API documentation using spring boot projects. springdoc-openapi works by examining an application at runtime to infer API semantics based on spring configurations, class structure and various annotations.
@@ -28,13 +29,9 @@ The test API are in [Swagger].
 
 ### Installation
 
-
-
 ### Plugins
 
-
 ### Development 
-
 
 [Swagger]: <http://localhost:9000/starwars-test/swagger-ui/index.html?configUrl=/starwars-test/v3/api-docs/swagger-config>
 [Feign]: <https://github.com/OpenFeign/feign>

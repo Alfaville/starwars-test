@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -21,10 +22,14 @@ public class PeopleStarwarsApiController implements PeopleStarwarsOpenApi {
     private final FindAllPeopleStarUseCase findAllPeopleStarUseCase;
 
     @Override
-    @GetMapping(value = "/people")
-    public ResponseEntity<List<PeopleStarResponse>> getAll() {
-        var responseUsece = findAllPeopleStarUseCase.execute();
-        return ResponseEntity.status(HttpStatus.OK).body(responseUsece);
+    @GetMapping(value = "/people", params = "page")
+    public ResponseEntity<List<PeopleStarResponse>> getAll(@RequestParam(value = "page", defaultValue = "1") Integer page) {
+        var responseUsece = findAllPeopleStarUseCase.execute(page);
+        if(responseUsece.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(responseUsece);
+        }
     }
 
 }

@@ -1,12 +1,14 @@
-package com.kuber.starwarstest.controller.response;
+package com.kuber.starwarstest.gateway.response;
 
-import lombok.Builder;
+import com.kuber.starwarstest.controller.response.ResponseBase;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
-@Builder
-public class PeopleStarResponse implements ResponseBase {
+@Setter
+public class PeopleStarGatewayResponse implements ResponseBase {
     private String name;
     private String mass;
     private String height;
@@ -15,8 +17,6 @@ public class PeopleStarResponse implements ResponseBase {
     private String skinColor;
     private String gender;
     private String birthYear;
-    @Setter
-    private SpecieStarResponse specie;
-    @Setter
-    private PlanetStarResponse homeworld;
+    private List<String> species;
+    private String homeworld;
 }

@@ -2,29 +2,22 @@ server:
   servlet.context-path: /starwars-test
   port: 9000
 
-logging.level.org.zalando.logbook: TRACE
-
-people-stars:
-  ribbon:
-    listOfServers: https://swapi.dev/api/
-
 feign:
+  hystrix:
+    enabled: true
   client:
     config:
       feignName:
         connectTimeout: 5000
         readTimeout: 5000
-        loggerLevel: full
+        loggerLevel: basic
+  swapi:
+    urlBase: https://swapi.dev/api/
+    people: people-stars
+    planet: planet-stars
+    specie: specie-stars
 
 spring:
   jackson:
     property-naming-strategy: SNAKE_CASE
-#  datasource:
-#    url:
-#    username: postgres
-#    password: postgres
-#    driver-class-name:
-#  jpa:
-#    show-sql: true
-#    properties.hibernate.format_sql: true
-#    hibernate.ddl-auto: none
+    default-property-inclusion: non_null

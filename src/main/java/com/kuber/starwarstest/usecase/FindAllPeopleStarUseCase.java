@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface FindAllPeopleStarUseCase {
 
-    List<PeopleStarResponse> execute();
+    List<PeopleStarResponse> execute(Integer page);
 
 }

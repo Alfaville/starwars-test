@@ -2,6 +2,8 @@ plugins {
 	id 'org.springframework.boot' version '2.3.9.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'org.jetbrains.kotlin.jvm' version '1.4.31'
+	id 'pmd'
 }
 
 group = 'com.kuber'
@@ -31,6 +33,7 @@ dependencies {
 
 	implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-ribbon'
+	implementation 'org.springframework.cloud:spring-cloud-netflix-hystrix'
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 
 	compileOnly 'org.projectlombok:lombok'
@@ -43,11 +46,18 @@ dependencies {
 
 	implementation 'org.springdoc:springdoc-openapi-ui:1.5.5'
 
+	implementation "org.jetbrains.kotlin:kotlin-stdlib"
+	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+
 	testImplementation ('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 	testImplementation 'org.testcontainers:junit-jupiter'
 	testImplementation 'org.testcontainers:postgresql'
+	testCompile "org.testcontainers:mockserver:1.15.2"
+
+	testCompile 'org.mock-server:mockserver-client-java:5.7.2'
+	compile 'org.mock-server:mockserver-junit-jupiter:5.7.2'
 }
 
 dependencyManagement {
@@ -60,4 +70,22 @@ dependencyManagement {
 test {
 	useJUnitPlatform()
 	failFast false
+}
+
+pmd {
+	toolVersion = "6.21.0"
+	ruleSetFiles = files("config/custom-pmd-style.xml")
+	ruleSets = []
+	ignoreFailures = false
+}
+
+compileKotlin {
+	kotlinOptions {
+		jvmTarget = "1.8"
+	}
+}
+compileTestKotlin {
+	kotlinOptions {
+		jvmTarget = "1.8"
+	}
 }
