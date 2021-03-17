@@ -12,7 +12,7 @@ import java.util.List;
 public abstract class MockFactory {
 
     public static PaginableResponse<PeopleStarGatewayResponse> getCompletePeopleGatewayApiResponde() {
-        PaginableResponse<PeopleStarGatewayResponse> response = getPeopleGatewayApiResponde();
+        var response = getPeopleGatewayApiResponde();
         response.setCount(1);
 
         response.getResults().get(0).setHomeworld("1");
@@ -42,7 +42,7 @@ public abstract class MockFactory {
     }
 
     public static SpecieStarGatewayResponse getSpecieGatewayApiResponde() {
-        SpecieStarGatewayResponse response = new SpecieStarGatewayResponse();
+        var response = new SpecieStarGatewayResponse();
 
         response.setClassification("mammal");
         response.setAverageHeight("180");
@@ -58,7 +58,7 @@ public abstract class MockFactory {
     }
 
     public static PlanetStarGatewayResponse getPlanetGatewayApiResponde() {
-        PlanetStarGatewayResponse response = new PlanetStarGatewayResponse();
+        var response = new PlanetStarGatewayResponse();
 
         response.setName("Tatooine");
         response.setRotationPeriod("23");

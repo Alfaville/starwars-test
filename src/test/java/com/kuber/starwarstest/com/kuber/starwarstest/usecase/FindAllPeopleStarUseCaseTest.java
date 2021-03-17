@@ -21,6 +21,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.when;
@@ -59,32 +60,39 @@ public class FindAllPeopleStarUseCaseTest {
 
         List<PeopleStarResponse> responseUseCase = findAllPeopleStarUseCase.execute(pageOne);
 
-        assertFalse(responseUseCase.isEmpty());
+        assertAll("People",
+            () -> assertFalse(responseUseCase.isEmpty()),
+            () -> {
+                PeopleStarResponse expectedResponse = responseUseCase.get(0);
 
-        PeopleStarResponse expectedResponse = responseUseCase.get(0);
-        assertEquals("Luke Skywalker", expectedResponse.getName());
-        assertEquals("male", expectedResponse.getGender());
-        assertEquals("19BBY", expectedResponse.getBirthYear());
-        assertEquals("fair", expectedResponse.getSkinColor());
-        assertEquals("blond", expectedResponse.getHairColor());
-        assertEquals("blue", expectedResponse.getEyeColor());
-        assertEquals("172", expectedResponse.getHeight());
-        assertEquals("77", expectedResponse.getMass());
+                assertAll("Own characteristics, species and your planet",
+                    () -> assertEquals("Luke Skywalker", expectedResponse.getName()),
+                    () -> assertEquals("male", expectedResponse.getGender()),
+                    () -> assertEquals("19BBY", expectedResponse.getBirthYear()),
+                    () -> assertEquals("fair", expectedResponse.getSkinColor()),
+                    () -> assertEquals("blond", expectedResponse.getHairColor()),
+                    () -> assertEquals("blue", expectedResponse.getEyeColor()),
+                    () -> assertEquals("172", expectedResponse.getHeight()),
+                    () -> assertEquals("77", expectedResponse.getMass()),
 
-        assertEquals(1, expectedResponse.getSpecie().getId());
-        assertEquals("mammal", expectedResponse.getSpecie().getClassification());
-        assertEquals("sentient", expectedResponse.getSpecie().getDesignation());
-        assertEquals("180", expectedResponse.getSpecie().getAverageHeight());
-        assertEquals("120", expectedResponse.getSpecie().getAverageLifespan());
-        assertEquals("Galactic Basic", expectedResponse.getSpecie().getLanguage());
-        assertEquals("Human", expectedResponse.getSpecie().getName());
+                    () -> assertEquals(1, expectedResponse.getSpecie().getId()),
+                    () -> assertEquals("mammal", expectedResponse.getSpecie().getClassification()),
+                    () -> assertEquals("sentient", expectedResponse.getSpecie().getDesignation()),
+                    () -> assertEquals("180", expectedResponse.getSpecie().getAverageHeight()),
+                    () -> assertEquals("120", expectedResponse.getSpecie().getAverageLifespan()),
+                    () -> assertEquals("Galactic Basic", expectedResponse.getSpecie().getLanguage()),
+                    () -> assertEquals("Human", expectedResponse.getSpecie().getName()),
 
-        assertEquals(1, expectedResponse.getHomeworld().getId());
-        assertEquals("Tatooine", expectedResponse.getHomeworld().getName());
-        assertEquals("arid", expectedResponse.getHomeworld().getClimate());
-        assertEquals("1 standard", expectedResponse.getHomeworld().getGravity());
-        assertEquals("desert", expectedResponse.getHomeworld().getTerrain());
-        assertEquals("200000", expectedResponse.getHomeworld().getPopulation());
+                    () -> assertEquals(1, expectedResponse.getHomeworld().getId()),
+                    () -> assertEquals("Tatooine", expectedResponse.getHomeworld().getName()),
+                    () -> assertEquals("arid", expectedResponse.getHomeworld().getClimate()),
+                    () -> assertEquals("1 standard", expectedResponse.getHomeworld().getGravity()),
+                    () -> assertEquals("desert", expectedResponse.getHomeworld().getTerrain()),
+                    () -> assertEquals("200000", expectedResponse.getHomeworld().getPopulation())
+                );
+            }
+        );
+
     }
 
     @Test
