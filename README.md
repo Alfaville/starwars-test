@@ -29,9 +29,15 @@ The test API are in [Swagger].
 
 ### Installation
 
+* Java 11 minimum version;
+* Docker
+
 ### Plugins
 
+* Lombok
+
 ### Development 
+
 
 [Swagger]: <http://localhost:9000/starwars-test/swagger-ui/index.html?configUrl=/starwars-test/v3/api-docs/swagger-config>
 [Feign]: <https://github.com/OpenFeign/feign>

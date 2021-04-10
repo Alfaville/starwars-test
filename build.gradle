@@ -52,12 +52,8 @@ dependencies {
 	testImplementation ('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
-	testImplementation 'org.testcontainers:junit-jupiter'
-	testImplementation 'org.testcontainers:postgresql'
-	testCompile "org.testcontainers:mockserver:1.15.2"
-
-	testCompile 'org.mock-server:mockserver-client-java:5.7.2'
-	compile 'org.mock-server:mockserver-junit-jupiter:5.7.2'
+	testImplementation "org.testcontainers:mockserver"
+	testImplementation 'org.mock-server:mockserver-client-java:5.7.2'
 }
 
 dependencyManagement {

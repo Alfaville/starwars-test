@@ -9,7 +9,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class MockFactory {
+public class MockFactory {
+
+    private MockFactory() {}
+
+    public static final String STARWARS_PEOPLE_API_RESPONSE = "{\"count\":1,\"next\":\"http://swapi.dev/api/people/?page=3\",\"previous\":\"http://swapi.dev/api/people/?page=1\",\"results\":[{\"name\":\"Anakin Skywalker\",\"height\":\"188\",\"mass\":\"84\",\"hair_color\":\"blond\",\"skin_color\":\"fair\",\"eye_color\":\"blue\",\"birth_year\":\"41.9BBY\",\"gender\":\"male\",\"homeworld\":\"http://swapi.dev/api/planets/1/\",\"films\":[\"http://swapi.dev/api/films/4/\",\"http://swapi.dev/api/films/5/\",\"http://swapi.dev/api/films/6/\"],\"species\":[],\"vehicles\":[\"http://swapi.dev/api/vehicles/44/\",\"http://swapi.dev/api/vehicles/46/\"],\"starships\":[\"http://swapi.dev/api/starships/39/\",\"http://swapi.dev/api/starships/59/\",\"http://swapi.dev/api/starships/65/\"],\"created\":\"2014-12-10T16:20:44.310000Z\",\"edited\":\"2014-12-20T21:17:50.327000Z\",\"url\":\"http://swapi.dev/api/people/11/\"}]}";
+    public static final String STARWARS_PLANET_API_RESPONSE = "{\"name\":\"Yavin IV\",\"rotation_period\":\"24\",\"orbital_period\":\"4818\",\"diameter\":\"10200\",\"climate\":\"temperate, tropical\",\"gravity\":\"1 standard\",\"terrain\":\"jungle, rainforests\",\"surface_water\":\"8\",\"population\":\"1000\",\"residents\":[],\"films\":[\"http://swapi.dev/api/films/1/\"],\"created\":\"2014-12-10T11:37:19.144000Z\",\"edited\":\"2014-12-20T20:58:18.421000Z\",\"url\":\"http://swapi.dev/api/planets/3/\"}";
+    public static final String STARWARS_SPECIES_API_RESPONSE = "{\"name\":\"Wookie\",\"classification\":\"mammal\",\"designation\":\"sentient\",\"average_height\":\"210\",\"skin_colors\":\"gray\",\"hair_colors\":\"black, brown\",\"eye_colors\":\"blue, green, yellow, brown, golden, red\",\"average_lifespan\":\"400\",\"homeworld\":\"http://swapi.dev/api/planets/14/\",\"language\":\"Shyriiwook\",\"people\":[\"http://swapi.dev/api/people/13/\",\"http://swapi.dev/api/people/80/\"],\"films\":[\"http://swapi.dev/api/films/1/\",\"http://swapi.dev/api/films/2/\",\"http://swapi.dev/api/films/3/\",\"http://swapi.dev/api/films/6/\"],\"created\":\"2014-12-10T16:44:31.486000Z\",\"edited\":\"2014-12-20T21:36:42.142000Z\",\"url\":\"http://swapi.dev/api/species/3/\"}";
 
     public static PaginableResponse<PeopleStarGatewayResponse> getCompletePeopleGatewayApiResponde() {
         var response = getPeopleGatewayApiResponde();

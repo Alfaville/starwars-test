@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(value = "${feign.swapi.specie}", url = "${feign.swapi.urlBase}", fallback = StarwarsApiGatewayFallback.class)
 public interface SpecieStarwarsApiGateway {
 
-    @GetMapping(value = "/speciess/{id}/")
+    @GetMapping(value = "/species/{id}/")
     SpecieStarGatewayResponse getSpecieById(@PathVariable(value = "id") Integer id);
 
 }
