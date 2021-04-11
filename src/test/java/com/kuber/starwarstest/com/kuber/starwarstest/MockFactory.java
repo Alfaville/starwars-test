@@ -1,9 +1,9 @@
 package com.kuber.starwarstest.com.kuber.starwarstest;
 
-import com.kuber.starwarstest.controller.response.PaginableResponse;
-import com.kuber.starwarstest.gateway.response.PeopleStarGatewayResponse;
-import com.kuber.starwarstest.gateway.response.PlanetStarGatewayResponse;
-import com.kuber.starwarstest.gateway.response.SpecieStarGatewayResponse;
+import com.kuber.starwarstest.entrypoint.http.response.PaginableResponse;
+import com.kuber.starwarstest.dataprovider.api.response.PeopleStarGatewayResponse;
+import com.kuber.starwarstest.dataprovider.api.response.PlanetStarGatewayResponse;
+import com.kuber.starwarstest.dataprovider.api.response.SpecieStarGatewayResponse;
 
 import java.util.ArrayList;
 import java.util.Collections;

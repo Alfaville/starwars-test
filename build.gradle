@@ -65,7 +65,7 @@ dependencyManagement {
 
 test {
 	useJUnitPlatform()
-	failFast false
+	failFast true
 }
 
 pmd {

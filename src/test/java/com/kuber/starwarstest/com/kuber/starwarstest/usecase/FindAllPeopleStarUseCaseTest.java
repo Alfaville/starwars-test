@@ -1,14 +1,12 @@
 package com.kuber.starwarstest.com.kuber.starwarstest.usecase;
 
 import com.kuber.starwarstest.com.kuber.starwarstest.MockFactory;
-import com.kuber.starwarstest.controller.response.PeopleStarResponse;
-import com.kuber.starwarstest.gateway.api.PeopleStarwarsApiGateway;
-import com.kuber.starwarstest.gateway.api.PlanetStarwarsApiGateway;
-import com.kuber.starwarstest.gateway.api.SpecieStarwarsApiGateway;
-import com.kuber.starwarstest.usecase.converter.PeopleStarwarGatewayToPeopleResponseConverter;
-import com.kuber.starwarstest.usecase.converter.PlanetStarwarGatewayToPlanetResponseConverter;
-import com.kuber.starwarstest.usecase.converter.SpecieStarwarGatewayToSpecieResponseConverter;
-import com.kuber.starwarstest.usecase.impl.FindAllPeopleStarUseCaseImpl;
+import com.kuber.starwarstest.entrypoint.http.response.PeopleStarResponse;
+import com.kuber.starwarstest.dataprovider.api.StarwarsApiGateway;
+import com.kuber.starwarstest.core.usecase.converter.PeopleStarwarGatewayToPeopleResponseConverter;
+import com.kuber.starwarstest.core.usecase.converter.PlanetStarwarGatewayToPlanetResponseConverter;
+import com.kuber.starwarstest.core.usecase.converter.SpecieStarwarGatewayToSpecieResponseConverter;
+import com.kuber.starwarstest.core.usecase.impl.FindAllPeopleStarUseCaseImpl;
 import feign.FeignException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,11 +31,7 @@ public class FindAllPeopleStarUseCaseTest {
     @SpyBean
     FindAllPeopleStarUseCaseImpl findAllPeopleStarUseCase;
     @MockBean
-    PeopleStarwarsApiGateway peopleStarwarsApiGateway;
-    @MockBean
-    PlanetStarwarsApiGateway planetStarwarsApiGateway;
-    @MockBean
-    SpecieStarwarsApiGateway specieStarwarsApiGateway;
+    StarwarsApiGateway starwarsApiGateway;
     @SpyBean
     PeopleStarwarGatewayToPeopleResponseConverter peopleStarwarGatewayToPeopleResponseConverter;
     @SpyBean
@@ -49,13 +43,13 @@ public class FindAllPeopleStarUseCaseTest {
     @DisplayName("Get All Paginable People Of StarwarsApi with success")
     public void getAllPaginablePeopleOfStarwarsApiWithSuccess() {
         Integer pageOne = 1;
-        when(peopleStarwarsApiGateway.getAllPeoplePerPage(pageOne))
+        when(starwarsApiGateway.getAllPeoplePerPage(pageOne))
                 .thenReturn(MockFactory.getCompletePeopleGatewayApiResponde());
 
-        when(specieStarwarsApiGateway.getSpecieById(1))
+        when(starwarsApiGateway.getSpecieById(1))
                 .thenReturn(MockFactory.getSpecieGatewayApiResponde());
 
-        when(planetStarwarsApiGateway.getPlanetById(1))
+        when(starwarsApiGateway.getPlanetById(1))
                 .thenReturn(MockFactory.getPlanetGatewayApiResponde());
 
         List<PeopleStarResponse> responseUseCase = findAllPeopleStarUseCase.execute(pageOne);
@@ -99,7 +93,7 @@ public class FindAllPeopleStarUseCaseTest {
     @DisplayName("Get All Paginable People Of StarwarsApi Without Specie and Planet and Return success")
     public void getAllPaginablePeopleOfStarwarsApiWithoutSpecieAndPlaneceReturnSuccess() {
         Integer pageOne = 1;
-        when(peopleStarwarsApiGateway.getAllPeoplePerPage(pageOne))
+        when(starwarsApiGateway.getAllPeoplePerPage(pageOne))
                 .thenReturn(MockFactory.getPeopleGatewayApiResponde());
 
         List<PeopleStarResponse> responseUseCase = findAllPeopleStarUseCase.execute(pageOne);
@@ -121,7 +115,7 @@ public class FindAllPeopleStarUseCaseTest {
     @DisplayName("Get All Paginable People Of StarwarsApi And Return Not Found")
     public void getAllPaginablePeopleOfStarwarsApiReturnNotFound() {
         Integer unknowPage = 99999;
-        when(peopleStarwarsApiGateway.getAllPeoplePerPage(unknowPage))
+        when(starwarsApiGateway.getAllPeoplePerPage(unknowPage))
                 .thenThrow(FeignException.NotFound.class);
 
         FeignException.NotFound notFoundException = assertThrows(

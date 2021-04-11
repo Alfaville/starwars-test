@@ -13,9 +13,7 @@ feign:
         loggerLevel: basic
   swapi:
     urlBase: https://swapi.dev/api/
-    people: people-stars
-    planet: planet-stars
-    specie: specie-stars
+    nameService: stars-api
 
 spring:
   jackson:
@@ -23,3 +21,5 @@ spring:
     default-property-inclusion: non_null
   application:
     name: starwars-test
+  flyway:
+    locations: "classpath:db/migration"

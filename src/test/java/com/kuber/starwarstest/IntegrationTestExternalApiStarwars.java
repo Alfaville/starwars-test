@@ -1,10 +1,10 @@
 package com.kuber.starwarstest;
 
 import com.kuber.starwarstest.com.kuber.starwarstest.MockFactory;
-import com.kuber.starwarstest.controller.response.PaginableResponse;
-import com.kuber.starwarstest.gateway.response.PeopleStarGatewayResponse;
-import com.kuber.starwarstest.gateway.response.PlanetStarGatewayResponse;
-import com.kuber.starwarstest.gateway.response.SpecieStarGatewayResponse;
+import com.kuber.starwarstest.entrypoint.http.response.PaginableResponse;
+import com.kuber.starwarstest.dataprovider.api.response.PeopleStarGatewayResponse;
+import com.kuber.starwarstest.dataprovider.api.response.PlanetStarGatewayResponse;
+import com.kuber.starwarstest.dataprovider.api.response.SpecieStarGatewayResponse;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -13,6 +13,8 @@ import org.mockserver.client.MockServerClient;
 import org.mockserver.model.Header;
 import org.mockserver.model.HttpRequest;
 import org.mockserver.verify.VerificationTimes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -35,6 +37,7 @@ import static org.mockserver.model.HttpResponse.response;
 @SpringJUnitConfig(TestConfiguration.class)
 class IntegrationTestExternalApiStarwars {
 
+	private static final Logger logger = LoggerFactory.getLogger(IntegrationTestExternalApiStarwars.class);
 	public static MockServerContainer mockServer = new MockServerContainer(DockerImageName.parse("jamesdbloom/mockserver:latest"));
 	private static String BASE_PATH;
 	private static MockServerClient mockServerClient;
@@ -67,7 +70,7 @@ class IntegrationTestExternalApiStarwars {
 		//GIVEN
 		final HttpRequest httpRequest = request().withMethod("GET").withPath("/api/planets/3/");
 
-		final String logMessage = mockServerClient.retrieveLogMessages(httpRequest);
+		logger.info(mockServerClient.retrieveLogMessages(httpRequest));
 
 		mockServerClient
 				.when(httpRequest)
@@ -112,13 +115,12 @@ class IntegrationTestExternalApiStarwars {
 	@DisplayName("Get all people per page 2 and returns status HTTP code 200")
 	public void get_all_people_per_page_2_and_returns_HTTP_code_200() {
 		//GIVEN
+		final HttpRequest httpRequest = request().withMethod("GET").withPath("/api/people/").withQueryStringParameter("page", "2");
+
+		logger.info(mockServerClient.retrieveLogMessages(httpRequest));
+
 		mockServerClient
-				.when(
-						request()
-								.withMethod("GET")
-								.withPath("/api/people/")
-								.withQueryStringParameter("page", "2")
-				)
+				.when(httpRequest)
 				.respond(
 						response()
 								.withStatusCode(HttpStatus.OK.value())
@@ -161,12 +163,12 @@ class IntegrationTestExternalApiStarwars {
 	@DisplayName("Get species by id 3 and returns status HTTP code 200")
 	public void get_species_by_id_3_and_returns_HTTP_code_200() {
 		//GIVEN
+		final HttpRequest httpRequest = request().withMethod("GET").withPath("/api/species/3/");
+
+		logger.info(mockServerClient.retrieveLogMessages(httpRequest));
+
 		mockServerClient
-				.when(
-						request()
-								.withMethod("GET")
-								.withPath("/api/species/3/")
-				)
+				.when(httpRequest)
 				.respond(
 						response()
 								.withStatusCode(HttpStatus.OK.value())

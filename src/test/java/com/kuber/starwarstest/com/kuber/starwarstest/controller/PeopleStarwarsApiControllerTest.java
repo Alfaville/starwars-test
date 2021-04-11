@@ -1,18 +1,16 @@
 package com.kuber.starwarstest.com.kuber.starwarstest.controller;
 
 import com.kuber.starwarstest.com.kuber.starwarstest.MockFactory;
-import com.kuber.starwarstest.controller.PeopleStarwarsApiController;
-import com.kuber.starwarstest.controller.response.PaginableResponse;
-import com.kuber.starwarstest.gateway.api.PeopleStarwarsApiGateway;
-import com.kuber.starwarstest.gateway.api.PlanetStarwarsApiGateway;
-import com.kuber.starwarstest.gateway.api.SpecieStarwarsApiGateway;
-import com.kuber.starwarstest.gateway.response.PeopleStarGatewayResponse;
-import com.kuber.starwarstest.gateway.response.PlanetStarGatewayResponse;
-import com.kuber.starwarstest.gateway.response.SpecieStarGatewayResponse;
-import com.kuber.starwarstest.usecase.converter.PeopleStarwarGatewayToPeopleResponseConverter;
-import com.kuber.starwarstest.usecase.converter.PlanetStarwarGatewayToPlanetResponseConverter;
-import com.kuber.starwarstest.usecase.converter.SpecieStarwarGatewayToSpecieResponseConverter;
-import com.kuber.starwarstest.usecase.impl.FindAllPeopleStarUseCaseImpl;
+import com.kuber.starwarstest.entrypoint.http.PeopleStarwarsApiController;
+import com.kuber.starwarstest.entrypoint.http.response.PaginableResponse;
+import com.kuber.starwarstest.dataprovider.api.StarwarsApiGateway;
+import com.kuber.starwarstest.dataprovider.api.response.PeopleStarGatewayResponse;
+import com.kuber.starwarstest.dataprovider.api.response.PlanetStarGatewayResponse;
+import com.kuber.starwarstest.dataprovider.api.response.SpecieStarGatewayResponse;
+import com.kuber.starwarstest.core.usecase.converter.PeopleStarwarGatewayToPeopleResponseConverter;
+import com.kuber.starwarstest.core.usecase.converter.PlanetStarwarGatewayToPlanetResponseConverter;
+import com.kuber.starwarstest.core.usecase.converter.SpecieStarwarGatewayToSpecieResponseConverter;
+import com.kuber.starwarstest.core.usecase.impl.FindAllPeopleStarUseCaseImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,11 +40,7 @@ public class PeopleStarwarsApiControllerTest {
     @SpyBean
     FindAllPeopleStarUseCaseImpl findAllPeopleStarUseCase;
     @MockBean
-    PeopleStarwarsApiGateway peopleStarwarsApiGateway;
-    @MockBean
-    PlanetStarwarsApiGateway planetStarwarsApiGateway;
-    @MockBean
-    SpecieStarwarsApiGateway specieStarwarsApiGateway;
+    StarwarsApiGateway starwarsApiGateway;
     @SpyBean
     PeopleStarwarGatewayToPeopleResponseConverter peopleStarwarGatewayToPeopleResponseConverter;
     @SpyBean
@@ -66,11 +60,11 @@ public class PeopleStarwarsApiControllerTest {
         final SpecieStarGatewayResponse responseSpecieGateway = MockFactory.getSpecieGatewayApiResponde();
 
         //WHEN
-        when(peopleStarwarsApiGateway.getAllPeoplePerPage(pageTwo))
+        when(starwarsApiGateway.getAllPeoplePerPage(pageTwo))
                 .thenReturn(responsePeopleGateway);
-        when(planetStarwarsApiGateway.getPlanetById(1))
+        when(starwarsApiGateway.getPlanetById(1))
                 .thenReturn(responsePlanetGateway);
-        when(specieStarwarsApiGateway.getSpecieById(1))
+        when(starwarsApiGateway.getSpecieById(1))
                 .thenReturn(responseSpecieGateway);
 
         ResultActions resultActions = mockMvc.perform(
@@ -115,7 +109,7 @@ public class PeopleStarwarsApiControllerTest {
         final Integer unknowPage = 999999;
 
         //WHEN
-        when(peopleStarwarsApiGateway.getAllPeoplePerPage(unknowPage))
+        when(starwarsApiGateway.getAllPeoplePerPage(unknowPage))
                 .thenReturn(new PaginableResponse<>());
 
         ResultActions resultActions = mockMvc.perform(
