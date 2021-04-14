@@ -1,5 +1,3 @@
-logging.level.org.zalando.logbook: INFO # configurar para não logar tudo. pro exemplo swagger page, h2 console
-
 spring:
   h2.console:
     enabled: true
