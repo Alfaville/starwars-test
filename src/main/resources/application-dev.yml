@@ -1,11 +1,15 @@
-logging.level.org.zalando.logbook: TRACE
+logging.level.org.zalando.logbook: INFO # configurar para não logar tudo. pro exemplo swagger page, h2 console
 
-#  datasource:
-#    url:
-#    username: postgres
-#    password: postgres
-#    driver-class-name:
-#  jpa:
-#    show-sql: true
-#    properties.hibernate.format_sql: true
-#    hibernate.ddl-auto: none
+spring:
+  h2.console:
+    enabled: true
+    settings:
+      web-allow-others: true
+  datasource:
+    url: jdbc:h2:mem:star_db;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;
+    username: admin
+    password: admin123
+    driver-class-name: org.h2.Driver
+  jpa:
+    show-sql: true
+    properties.hibernate.format_sql: true

@@ -1,6 +1,6 @@
 package com.kuber.starwarstest.config;
 
-import com.kuber.starwarstest.controller.response.ApiResponse;
+import com.kuber.starwarstest.entrypoint.http.response.ApiResponse;
 import feign.FeignException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;

@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'com.kuber'
-version = '0.0.1-SNAPSHOT'
+version = '0.2.0'
 sourceCompatibility = JavaVersion.VERSION_11
 
 configurations {
@@ -65,7 +65,7 @@ dependencyManagement {
 
 test {
 	useJUnitPlatform()
-	failFast false
+	failFast true
 }
 
 pmd {
@@ -73,6 +73,10 @@ pmd {
 	ruleSetFiles = files("config/custom-pmd-style.xml")
 	ruleSets = []
 	ignoreFailures = false
+}
+
+bootBuildImage {
+	imageName = "alfaville/starwar-test"
 }
 
 compileKotlin {
