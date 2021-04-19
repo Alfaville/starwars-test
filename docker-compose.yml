@@ -1,138 +1,36 @@
-#  docker-compose pull
-#  docker-compose up -d
-
-version: "3.8"
+version: "3.9"
 
 services:
   web:
-    build: .
-    image: alfaville/starwar-test
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: alfaville/starwar
     ports:
       - "9000:9000"
-    links:
+    restart: always
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
+    depends_on:
       - postgres
+    networks:
+      - backend
   postgres:
-    image: postgres
-#  db:
-#    image: 'postgres:13.1-alpine'
-#    container_name: db
-#    environment:
-#      - POSTGRES_USER=compose-postgres
-#      - POSTGRES_PASSWORD=compose-postgres
+    image: postgres:9.6
+    restart: always
+    ports:
+    - "5432:5432"
+    environment:
+      - POSTGRES_DB=startwars
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres #change from file path
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - backend
 
-#version: "3.7"
-#
-#services:
-#  api:
-#    image: gcr.io/movile-kiwi/kiwi-webservice-application:dev
-#    ports:
-#      - 17071:17071
-#    environment:
-#      APP_ENVIRONMENT: homolog
-#      APP_INCLUDE_DATADOG_AGENT: "true"
-#      DD_ENV: homolog
-#      DD_SERVICE: kiwi-api-homolog
-#      DD_AGENT_HOST: datadog
-#      DD_TRACE_AGENT_PORT: "8126"
-#      DD_PROFILING_ENABLED: "true"
-#      DD_LOGS_INJECTION: "true"
-#    volumes:
-#      - kiwi-secrets:/movile/kiwi
-#      - ./logs:/movile-logs
-#    depends_on:
-#      - "cassandra-load-keyspace"
-#  inspect:
-#    image: gcr.io/movile-kiwi/kiwi-inspect-webservice-application:dev
-#    ports:
-#      - 15015:15015
-#    environment:
-#      APP_ENVIRONMENT: homolog
-#      APP_INCLUDE_DATADOG_AGENT: "true"
-#      DD_ENV: homolog
-#      DD_SERVICE: kiwi-inspect-homolog
-#      DD_AGENT_HOST: datadog
-#      DD_TRACE_AGENT_PORT: "8126"
-#      DD_PROFILING_ENABLED: "true"
-#      DD_LOGS_INJECTION: "true"
-#    volumes:
-#      - kiwi-secrets:/movile/kiwi
-#      - ./logs:/movile-logs
-#    depends_on:
-#      - "cassandra-load-keyspace"
-#  purchase:
-#    image: gcr.io/movile-kiwi/kiwi-webservice-purchase-application:dev
-#    ports:
-#      - 16061:16061
-#    environment:
-#      APP_ENVIRONMENT: homolog
-#      APP_INCLUDE_DATADOG_AGENT: "true"
-#      DD_ENV: homolog
-#      DD_SERVICE: kiwi-purchase-homolog
-#      DD_AGENT_HOST: datadog
-#      DD_TRACE_AGENT_PORT: "8126"
-#      DD_PROFILING_ENABLED: "true"
-#      DD_LOGS_INJECTION: "true"
-#    volumes:
-#      - kiwi-secrets:/movile/kiwi
-#      - ./logs:/movile-logs
-#    depends_on:
-#  kiwi-cassandra:
-#    image: cassandra:2.2.19
-#    ports:
-#      - "9042:9042"
-#    volumes:
-#      - cassandra-data:/var/lib/cassandra
-#    healthcheck:
-#      test: ["CMD", "cqlsh", "-u cassandra", "-p cassandra" ,"-e describe keyspaces"]
-#      interval: 15s
-#      timeout: 10s
-#      retries: 10
-#  kiwi-redis:
-#    image: redis
-#    ports:
-#      - "6379:6379"
-#  kiwi-postgres:
-#    image: postgres:9.6
-#    environment:
-#      PGDATA: /var/lib/postgresql/data/pgdata
-#      POSTGRES_USER: kiwi
-#      POSTGRES_DB: kiwi
-#      POSTGRES_PASSWORD: kiwi-homolog
-#    volumes:
-#      - ./db-startup/postgres-startup.sql:/docker-entrypoint-initdb.d/some-startup.sql
-#      - postgres-data:/var/lib/postgresql/data
-#volumes:
-#  postgres-data:
-#  cassandra-data:
-#  kiwi-secrets:
-#    external: true
+volumes:
+  postgres-data:
 
-
-
-
-
-#version: '2'
-#services:
-#  message-server:
-#    container_name: message-server
-#    build:
-#      context: docker-message-server
-#      dockerfile: Dockerfile
-#    image: message-server:latest
-#    ports:
-#      - 18888:8888
-#    networks:
-#      - spring-cloud-network
-#  product-server:
-#    container_name: product-server
-#    build:
-#      context: docker-product-server
-#      dockerfile: Dockerfile
-#    image: product-server:latest
-#    ports:
-#      - 19999:9999
-#    networks:
-#      - spring-cloud-network
-#networks:
-#  spring-cloud-network:
-#    driver: bridge
+networks:
+  backend:

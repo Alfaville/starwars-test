@@ -40,12 +40,17 @@ The test API are in [Swagger].
 ### Deployment
 
 * Local
-  * Change the 'profiles' from the property at the **ENTRYPOINT**. Ex.: **-Dspring.profiles.active=dev**
-  * Use one of the command beloow to create the image: 
-    * **docker build -t starwars-docker .**
-    * **docker build --build-arg JAR_FILE=build/libs/\*.jar -t starwars-docker .**
+  * Use one of the command below to create the image: 
+    * **docker build -t alfaville/starwar .**
+    * **docker build --build-arg JAR_FILE=build/libs/\*.jar -t alfaville/starwar .**
+  * Run the docker command: **docker run -p 9000:9000 alfaville/starwar**
+  
+* Prod
+
+  * Use one of the command below to create the image:
+    * **./start.sh**
     * **gradle bootBuildImage**
-  * Run the docker command: **docker run -p 9000:9000 starwars-docker**
+      * Run the docker command: **docker run -p 9000:9000 alfaville/starwar**
 
 [Swagger]: <http://localhost:9000/starwars-test/swagger-ui/index.html?configUrl=/starwars-test/v3/api-docs/swagger-config>
 [Feign]: <https://github.com/OpenFeign/feign>
