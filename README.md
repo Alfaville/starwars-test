@@ -30,6 +30,7 @@ The test API are in [Swagger].
 ### Installation
 
 * Java 11 minimum version;
+* Gradle 4.5 minimum version;
 * Docker
 
 ### Plugins
@@ -38,12 +39,7 @@ The test API are in [Swagger].
 
 ### Deployment
 
-* Local
-  * Change the 'profiles' from the property at the **ENTRYPOINT**. Ex.: **-Dspring.profiles.active=dev**
-  * Use the command to create the image: 
-    * **docker build -t starwars-docker .**
-    * **docker build --build-arg JAR_FILE=build/libs/\*.jar -t starwars-docker .**
-  * Run the docker command: **docker run -p 9000:9000 starwars-docker**
+* Run the start.sh file and choose your environment.
 
 [Swagger]: <http://localhost:9000/starwars-test/swagger-ui/index.html?configUrl=/starwars-test/v3/api-docs/swagger-config>
 [Feign]: <https://github.com/OpenFeign/feign>

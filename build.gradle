@@ -76,7 +76,7 @@ pmd {
 }
 
 bootBuildImage {
-	imageName = "alfaville/starwar-test"
+	imageName = "alfaville/starwar"
 }
 
 compileKotlin {

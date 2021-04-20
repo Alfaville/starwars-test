@@ -8,6 +8,7 @@ WORKDIR /app
 RUN mkdir /opt/app
 COPY ${JAR_FILE} /opt/app/starwars.jar
 
-ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-jar", "/opt/app/starwars.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=local", "-jar", "/opt/app/starwars.jar"]
 
-EXPOSE 9000
+ENV PORT 9000
+EXPOSE $PORT
