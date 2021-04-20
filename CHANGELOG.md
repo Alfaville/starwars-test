@@ -6,7 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.3.0] - 2021-04-14
 ### Added
-- Added Dockerfile configuration in the project;
+- Added Dockerfile and docker-compose configuration in the project;
+- Added person, planet and specie scripts;
+- Added local configuration file;
+- Added start.sh file responsible for running system in different environments (DEV, LOCAL and PROD);
+### Changed
+- Changed flyway property from the dev configuration file;
+- Update of README file;
 
 ## [0.2.0] - 2021-04-09
 ### Added
