@@ -39,7 +39,7 @@ The test API are in [Swagger].
 
 ### Deployment
 
-* Run the start.sh file and choose your environment.
+* Run the start.sh file and choose the environment (DEV, LOCAL or PROD).
 
 [Swagger]: <http://localhost:9000/starwars-test/swagger-ui/index.html?configUrl=/starwars-test/v3/api-docs/swagger-config>
 [Feign]: <https://github.com/OpenFeign/feign>

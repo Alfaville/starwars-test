@@ -69,10 +69,12 @@ test {
 }
 
 pmd {
-	toolVersion = "6.21.0"
+	toolVersion = "6.33.0"
+//	rulesMinimumPriority = 5
+	consoleOutput = true
 	ruleSetFiles = files("config/custom-pmd-style.xml")
-	ruleSets = []
-	ignoreFailures = false
+//	ruleSets = ["category/java/errorprone.xml", "category/java/bestpractices.xml"]
+	ignoreFailures = true
 }
 
 bootBuildImage {
