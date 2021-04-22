@@ -1,4 +1,4 @@
-package com.kuber.starwarstest.com.kuber.starwarstest.controller;
+package com.kuber.starwarstest.com.kuber.starwarstest.entrypoint.http;
 
 import com.kuber.starwarstest.com.kuber.starwarstest.MockFactory;
 import com.kuber.starwarstest.entrypoint.http.PeopleStarwarsApiController;

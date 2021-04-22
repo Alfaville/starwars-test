@@ -1,10 +1,25 @@
 package com.kuber.starwarstest.core.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.FetchType;
+import javax.persistence.CascadeType;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "person")
 public class PersonEntity {
@@ -17,7 +32,7 @@ public class PersonEntity {
     private String name;
 
     @Column(name = "mass")
-    private Integer mass;
+    private Double mass;
 
     @Column(name = "height")
     private Integer height;

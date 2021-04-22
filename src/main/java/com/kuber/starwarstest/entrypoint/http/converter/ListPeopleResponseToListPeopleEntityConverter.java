@@ -1,51 +1,47 @@
-package com.kuber.starwarstest.core.usecase.converter;
+package com.kuber.starwarstest.entrypoint.http.converter;
 
-import com.kuber.starwarstest.entrypoint.http.response.PaginableResponse;
+import com.kuber.starwarstest.core.entity.GenderEnum;
+import com.kuber.starwarstest.core.entity.PersonEntity;
 import com.kuber.starwarstest.entrypoint.http.response.PeopleStarResponse;
-import com.kuber.starwarstest.entrypoint.http.response.PlanetStarResponse;
-import com.kuber.starwarstest.entrypoint.http.response.SpecieStarResponse;
-import com.kuber.starwarstest.dataprovider.api.response.PeopleStarGatewayResponse;
-import com.kuber.starwarstest.utils.UtilsKt;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Component
-public class PeopleStarwarGatewayToPeopleResponseConverter implements Converter<PaginableResponse<PeopleStarGatewayResponse>, List<PeopleStarResponse>> {
+public class ListPeopleResponseToListPeopleEntityConverter implements Converter<List<PeopleStarResponse>, List<PersonEntity>> {
+
+    private static final String UNKNOWN_TYPE = "unknown";
 
     @Override
-    public List<PeopleStarResponse> convert(PaginableResponse<PeopleStarGatewayResponse> source) {
-        final List<PeopleStarResponse> peopleStarGatewayRespons = new ArrayList<>();
-        source.getResults().forEach(dto -> {
-            var species = dto.getSpecies();
-            if(CollectionUtils.isEmpty(species)){
-                species = Collections.emptyList();
-            }
-            final String specie = species.stream().findFirst().orElse(null);
-            peopleStarGatewayRespons.add(
-                    PeopleStarResponse.builder()
+    public List<PersonEntity> convert(List<PeopleStarResponse> source) {
+        final List<PersonEntity> listPeopleEntity = new ArrayList<>();
+        source.forEach(dto ->
+            listPeopleEntity.add(
+                    PersonEntity.builder()
                             .birthYear(dto.getBirthYear())
-                            .eyeColor(dto.getEyeColor())
-                            .gender(dto.getGender())
-                            .hairColor(dto.getHairColor())
-                            .height(dto.getHeight())
-                            .mass(dto.getMass())
                             .name(dto.getName())
+                            .eyeColor(dto.getEyeColor())
+                            .gender(GenderEnum.valueOf(dto.getGender().toUpperCase()))
+                            .hairColor(dto.getHairColor())
+                            .height(parseIntUnknown(dto.getHeight()))
+                            .mass(parseDoubleUnknown(dto.getMass()))
                             .skinColor(dto.getSkinColor())
-                            .specie(
-                                    SpecieStarResponse.builder().id(UtilsKt.getId(specie)).build()
-                            )
-                            .homeworld(
-                                    PlanetStarResponse.builder().id(UtilsKt.getId(dto.getHomeworld())).build()
-                            )
+//                            .specie(dto.getSpecie()) TODO
+//                            .planet()
                             .build()
-            );
-        });
-        return peopleStarGatewayRespons;
+            )
+        );
+        return listPeopleEntity;
+    }
+
+    private Integer parseIntUnknown(String value) {
+        return value.equalsIgnoreCase(UNKNOWN_TYPE) ? null : Integer.parseInt(value);
+    }
+
+    private Double parseDoubleUnknown(String value) {
+        return value.equalsIgnoreCase(UNKNOWN_TYPE) ? null : Double.parseDouble(value.replace(",", "."));
     }
 
 }

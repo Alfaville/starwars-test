@@ -1,5 +1,6 @@
-package com.kuber.starwarstest;
+package com.kuber.starwarstest.com.kuber.starwarstest.dataprovider.api;
 
+import com.kuber.starwarstest.TestConfiguration;
 import com.kuber.starwarstest.com.kuber.starwarstest.MockFactory;
 import com.kuber.starwarstest.entrypoint.http.response.PaginableResponse;
 import com.kuber.starwarstest.dataprovider.api.response.PeopleStarGatewayResponse;

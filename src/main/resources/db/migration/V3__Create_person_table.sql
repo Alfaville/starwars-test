@@ -5,7 +5,7 @@ create table person (
     gender integer,
     hair_color varchar(255),
     height integer,
-    mass integer,
+    mass double precision ,
     name varchar(255) not null,
     skin_color varchar(255),
     planet_id bigint,

@@ -1,8 +1,9 @@
 package com.kuber.starwarstest.entrypoint.http;
 
+import com.kuber.starwarstest.core.usecase.FindAllPeopleStarUseCase;
+import com.kuber.starwarstest.core.usecase.impl.SaveListPeopleUseCaseImpl;
 import com.kuber.starwarstest.entrypoint.http.openapi.PeopleStarwarsOpenApi;
 import com.kuber.starwarstest.entrypoint.http.response.PeopleStarResponse;
-import com.kuber.starwarstest.core.usecase.FindAllPeopleStarUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,21 +15,29 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static java.util.concurrent.CompletableFuture.runAsync;
+
 @RestController
 @RequestMapping(path = "/swapi/v1", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class PeopleStarwarsApiController implements PeopleStarwarsOpenApi {
 
     private final FindAllPeopleStarUseCase findAllPeopleStarUseCase;
+    private final SaveListPeopleUseCaseImpl savePeopleUseCase;
 
     @Override
     @GetMapping(value = "/people", params = "page")
     public ResponseEntity<List<PeopleStarResponse>> getAll(@RequestParam(value = "page", defaultValue = "1") Integer page) {
-        var responseUsece = findAllPeopleStarUseCase.execute(page);
-        if(responseUsece.isEmpty()) {
+        var responseUsecase = findAllPeopleStarUseCase.execute(page);
+
+        if(!responseUsecase.isEmpty()) {
+            runAsync(() -> savePeopleUseCase.execute(responseUsecase));
+        }
+
+        if(responseUsecase.isEmpty()) {
             return ResponseEntity.noContent().build();
         } else {
-            return ResponseEntity.status(HttpStatus.OK).body(responseUsece);
+            return ResponseEntity.status(HttpStatus.OK).body(responseUsecase);
         }
     }
 

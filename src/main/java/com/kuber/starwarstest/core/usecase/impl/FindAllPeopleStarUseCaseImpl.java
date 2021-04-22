@@ -1,17 +1,17 @@
 package com.kuber.starwarstest.core.usecase.impl;
 
-import com.kuber.starwarstest.entrypoint.http.response.PaginableResponse;
-import com.kuber.starwarstest.entrypoint.http.response.PeopleStarResponse;
-import com.kuber.starwarstest.entrypoint.http.response.PlanetStarResponse;
-import com.kuber.starwarstest.entrypoint.http.response.SpecieStarResponse;
-import com.kuber.starwarstest.dataprovider.api.StarwarsApiGateway;
-import com.kuber.starwarstest.dataprovider.api.response.PeopleStarGatewayResponse;
 import com.kuber.starwarstest.core.usecase.FindAllPeopleStarUseCase;
 import com.kuber.starwarstest.core.usecase.converter.PeopleStarwarGatewayToPeopleResponseConverter;
 import com.kuber.starwarstest.core.usecase.converter.PlanetStarwarGatewayToPlanetResponseConverter;
 import com.kuber.starwarstest.core.usecase.converter.SpecieStarwarGatewayToSpecieResponseConverter;
+import com.kuber.starwarstest.dataprovider.api.StarwarsApiGateway;
+import com.kuber.starwarstest.dataprovider.api.response.PeopleStarGatewayResponse;
+import com.kuber.starwarstest.entrypoint.http.response.PaginableResponse;
+import com.kuber.starwarstest.entrypoint.http.response.PeopleStarResponse;
+import com.kuber.starwarstest.entrypoint.http.response.PlanetStarResponse;
+import com.kuber.starwarstest.entrypoint.http.response.SpecieStarResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -20,7 +20,7 @@ import static java.util.Objects.isNull;
 import static java.util.concurrent.CompletableFuture.allOf;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class FindAllPeopleStarUseCaseImpl implements FindAllPeopleStarUseCase {
 

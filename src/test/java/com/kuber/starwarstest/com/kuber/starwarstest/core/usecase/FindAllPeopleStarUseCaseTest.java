@@ -1,4 +1,4 @@
-package com.kuber.starwarstest.com.kuber.starwarstest.usecase;
+package com.kuber.starwarstest.com.kuber.starwarstest.core.usecase;
 
 import com.kuber.starwarstest.com.kuber.starwarstest.MockFactory;
 import com.kuber.starwarstest.entrypoint.http.response.PeopleStarResponse;
