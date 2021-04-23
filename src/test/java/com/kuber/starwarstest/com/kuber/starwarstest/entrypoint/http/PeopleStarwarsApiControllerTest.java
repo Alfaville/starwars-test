@@ -7,7 +7,7 @@ import com.kuber.starwarstest.dataprovider.api.StarwarsApiGateway;
 import com.kuber.starwarstest.dataprovider.api.response.PeopleStarGatewayResponse;
 import com.kuber.starwarstest.dataprovider.api.response.PlanetStarGatewayResponse;
 import com.kuber.starwarstest.dataprovider.api.response.SpecieStarGatewayResponse;
-import com.kuber.starwarstest.core.usecase.converter.PeopleStarwarGatewayToPeopleResponseConverter;
+import com.kuber.starwarstest.core.usecase.converter.PeopleStarwarListGatewayToPeopleResponseListConverter;
 import com.kuber.starwarstest.core.usecase.converter.PlanetStarwarGatewayToPlanetResponseConverter;
 import com.kuber.starwarstest.core.usecase.converter.SpecieStarwarGatewayToSpecieResponseConverter;
 import com.kuber.starwarstest.core.usecase.impl.FindAllPeopleStarUseCaseImpl;
@@ -42,7 +42,7 @@ public class PeopleStarwarsApiControllerTest {
     @MockBean
     StarwarsApiGateway starwarsApiGateway;
     @SpyBean
-    PeopleStarwarGatewayToPeopleResponseConverter peopleStarwarGatewayToPeopleResponseConverter;
+    PeopleStarwarListGatewayToPeopleResponseListConverter peopleStarwarListGatewayToPeopleResponseListConverter;
     @SpyBean
     SpecieStarwarGatewayToSpecieResponseConverter specieStarwarGatewayToSpecieResponseConverter;
     @SpyBean

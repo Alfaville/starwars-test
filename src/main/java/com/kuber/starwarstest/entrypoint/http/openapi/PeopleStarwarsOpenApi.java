@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -27,4 +28,11 @@ public interface PeopleStarwarsOpenApi {
     ResponseEntity<List<PeopleStarResponse>> getAll(
             @Parameter(required = true, description = "Field where you can choose some page") Integer page);
 
+    @Operation(summary = "Get people by id", tags = {TAG})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content = {
+                    @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = PeopleStarResponse.class)),
+            }),
+    })
+    ResponseEntity<PeopleStarResponse> getById(@Parameter(required = true, description = "Id of people") Long id);
 }
