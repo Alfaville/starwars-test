@@ -1,7 +1,7 @@
 package com.kuber.starwarstest.core.usecase.impl;
 
 import com.kuber.starwarstest.core.usecase.FindAllPeopleStarUseCase;
-import com.kuber.starwarstest.core.usecase.converter.PeopleStarwarGatewayToPeopleResponseConverter;
+import com.kuber.starwarstest.core.usecase.converter.PeopleStarwarListGatewayToPeopleResponseListConverter;
 import com.kuber.starwarstest.core.usecase.converter.PlanetStarwarGatewayToPlanetResponseConverter;
 import com.kuber.starwarstest.core.usecase.converter.SpecieStarwarGatewayToSpecieResponseConverter;
 import com.kuber.starwarstest.dataprovider.api.StarwarsApiGateway;
@@ -18,6 +18,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static java.util.Objects.isNull;
 import static java.util.concurrent.CompletableFuture.allOf;
+import static java.util.concurrent.CompletableFuture.completedFuture;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 
 @Service
@@ -25,30 +26,30 @@ import static java.util.concurrent.CompletableFuture.supplyAsync;
 public class FindAllPeopleStarUseCaseImpl implements FindAllPeopleStarUseCase {
 
     private final StarwarsApiGateway starwarsApiGateway;
-    private final PeopleStarwarGatewayToPeopleResponseConverter peopleStarwarGatewayToPeopleResponseConverter;
+    private final PeopleStarwarListGatewayToPeopleResponseListConverter peopleStarwarListGatewayToPeopleResponseListConverter;
     private final SpecieStarwarGatewayToSpecieResponseConverter specieStarwarGatewayToSpecieResponseConverter;
     private final PlanetStarwarGatewayToPlanetResponseConverter planetStarwarGatewayToPlanetResponseConverter;
 
     @Override
     public List<PeopleStarResponse> execute(Integer page) {
         final PaginableResponse<PeopleStarGatewayResponse> responseGateway = starwarsApiGateway.getAllPeoplePerPage(page);
-        final List<PeopleStarResponse> peopleStarGatewayResponseList = peopleStarwarGatewayToPeopleResponseConverter.convert(responseGateway);
+        final List<PeopleStarResponse> peopleStarGatewayResponseList = peopleStarwarListGatewayToPeopleResponseListConverter.convert(responseGateway);
         peopleStarGatewayResponseList.stream().parallel().forEach(people -> {
 
-            final CompletableFuture<SpecieStarResponse> specieRequestAsyn = getSpecieByIdAsync(people.getSpecie().getId());
-            final CompletableFuture<PlanetStarResponse> planetRequestAsyn = getPlanetByIdAsync(people.getHomeworld().getId());
+            final CompletableFuture<SpecieStarResponse> specieRequestAsync = getSpecieByIdAsync(people.getSpecie().getId());
+            final CompletableFuture<PlanetStarResponse> planetRequestAsync = getPlanetByIdAsync(people.getHomeworld().getId());
 
-            allOf(specieRequestAsyn, planetRequestAsyn);
+            allOf(specieRequestAsync, planetRequestAsync);
 
-            people.setSpecie(specieRequestAsyn.join());
-            people.setHomeworld(planetRequestAsyn.join());
+            people.setSpecie(specieRequestAsync.join());
+            people.setHomeworld(planetRequestAsync.join());
         });
         return peopleStarGatewayResponseList;
     }
 
     private CompletableFuture<SpecieStarResponse> getSpecieByIdAsync(Integer id) {
         if(isNull(id)) {
-            return CompletableFuture.completedFuture(null);
+            return completedFuture(null);
         } else {
             return supplyAsync(() -> {
                 final SpecieStarResponse response = specieStarwarGatewayToSpecieResponseConverter.convert(starwarsApiGateway.getSpecieById(id));
@@ -60,7 +61,7 @@ public class FindAllPeopleStarUseCaseImpl implements FindAllPeopleStarUseCase {
 
     private CompletableFuture<PlanetStarResponse> getPlanetByIdAsync(Integer id) {
         if(isNull(id)) {
-            return CompletableFuture.completedFuture(null);
+            return completedFuture(null);
         } else {
             return supplyAsync(() -> {
                 final PlanetStarResponse response = planetStarwarGatewayToPlanetResponseConverter.convert(starwarsApiGateway.getPlanetById(id));

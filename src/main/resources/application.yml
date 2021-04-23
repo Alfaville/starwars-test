@@ -2,22 +2,35 @@ server:
   servlet.context-path: /starwars-test
   port: 9000
 
-feign:
-  hystrix:
-    enabled: true
-  client:
-    config:
-      feignName:
-        connectTimeout: 5000
-        readTimeout: 5000
-        loggerLevel: basic
-  swapi:
-    urlBase: https://swapi.dev/api/
-    nameService: stars-api
-
 spring:
   jackson:
     property-naming-strategy: SNAKE_CASE
     default-property-inclusion: non_null
   application:
     name: starwars-test
+
+external-api:
+    urlBase: https://swapi.dev/api/
+    nameService: starwarsapi
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 5000
+
+feign:
+  hystrix:
+    enabled: true
+#  client:
+#    config:
+#      default:
+#        connectTimeout: 5000
+#        readTimeout: 5000
+#        loggerLevel: full
+#      starwarsapi:
+#        connectTimeout: 5000
+#        readTimeout: 5000
+#        loggerLevel: full
