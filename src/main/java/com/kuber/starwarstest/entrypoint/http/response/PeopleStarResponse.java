@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 @Builder
 public class PeopleStarResponse implements ResponseBase {
+    @Setter
     private Long id;
     private String name;
     private String mass;

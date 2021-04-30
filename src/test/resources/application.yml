@@ -7,3 +7,9 @@ spring:
   jpa:
     show-sql: false
     properties.hibernate.format_sql: false
+  flyway:
+    locations: "classpath:db/migration,classpath:db/dev"
+
+external-api:
+  urlBase: https://swapi.dev/api/
+  nameService: starwarsapi

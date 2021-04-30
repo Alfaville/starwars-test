@@ -1,10 +1,12 @@
 package com.kuber.starwarstest.entrypoint.http;
 
 import com.kuber.starwarstest.core.usecase.FindAllPeopleStarUseCase;
-import com.kuber.starwarstest.core.usecase.SaveOrFindPeopleByIdUseCase;
+import com.kuber.starwarstest.core.usecase.FindPeopleByIdUseCase;
 import com.kuber.starwarstest.entrypoint.http.openapi.PeopleStarwarsOpenApi;
 import com.kuber.starwarstest.entrypoint.http.response.PeopleStarResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static java.util.concurrent.CompletableFuture.runAsync;
+import static java.util.Objects.isNull;
 
 @RestController
 @RequestMapping(path = "/swapi/v1", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -24,7 +26,14 @@ import static java.util.concurrent.CompletableFuture.runAsync;
 public class PeopleStarwarsApiController implements PeopleStarwarsOpenApi {
 
     private final FindAllPeopleStarUseCase findAllPeopleStarUseCase;
-    private final SaveOrFindPeopleByIdUseCase saveOrFindPeopleByIdUseCase;
+
+    @Autowired
+    @Qualifier("FindPeopleByIdDbUseCaseImpl")
+    private FindPeopleByIdUseCase findPeopleByIdDbUseCase;
+
+    @Autowired
+    @Qualifier("FindPeopleByIdExternalApiUseCaseImpl")
+    private FindPeopleByIdUseCase findPeopleByIdExternalApiUseCase;
 
     @Override
     @GetMapping(value = "/people", params = "page")
@@ -41,12 +50,13 @@ public class PeopleStarwarsApiController implements PeopleStarwarsOpenApi {
     @Override
     @GetMapping(value = "/people/{id}")
     public ResponseEntity<PeopleStarResponse> getById(@PathVariable("id") Long id) {
-        var responseUsecase = saveOrFindPeopleByIdUseCase.execute(id);
-        if(responseUsecase.isEmpty()) {
+        var responseUsecase = findPeopleByIdDbUseCase.execute(id)
+                .orElseGet(() -> findPeopleByIdExternalApiUseCase.execute(id)
+                        .orElse(null));
+        if(isNull(responseUsecase)) {
             return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.status(HttpStatus.OK).body(responseUsecase.get());
         }
+        return ResponseEntity.status(HttpStatus.OK).body(responseUsecase);
     }
 
 }

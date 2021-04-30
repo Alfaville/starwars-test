@@ -1,13 +1,11 @@
 package com.kuber.starwarstest.core.usecase.impl;
 
-import com.kuber.starwarstest.core.usecase.SaveOrFindPeopleByIdUseCase;
+import com.kuber.starwarstest.core.usecase.FindPeopleByIdUseCase;
 import com.kuber.starwarstest.core.usecase.SavePeopleUseCase;
-import com.kuber.starwarstest.core.usecase.converter.PeopleEntityToPeopleResponseConverter;
 import com.kuber.starwarstest.core.usecase.converter.PeopleStarwarGatewayToPeopleResponseConverter;
 import com.kuber.starwarstest.core.usecase.converter.PlanetStarwarGatewayToPlanetResponseConverter;
 import com.kuber.starwarstest.core.usecase.converter.SpecieStarwarGatewayToSpecieResponseConverter;
 import com.kuber.starwarstest.dataprovider.api.StarwarsApiGateway;
-import com.kuber.starwarstest.dataprovider.repository.PersonRepository;
 import com.kuber.starwarstest.entrypoint.http.response.PeopleStarResponse;
 import com.kuber.starwarstest.entrypoint.http.response.PlanetStarResponse;
 import com.kuber.starwarstest.entrypoint.http.response.SpecieStarResponse;
@@ -23,33 +21,27 @@ import static java.util.concurrent.CompletableFuture.completedFuture;
 import static java.util.concurrent.CompletableFuture.runAsync;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 
-@Service
+@Service("FindPeopleByIdExternalApiUseCaseImpl")
 @RequiredArgsConstructor
-public class SaveOrFindPeopleByIdUseCaseImpl implements SaveOrFindPeopleByIdUseCase {
+public class FindPeopleByIdExternalApiUseCaseImpl implements FindPeopleByIdUseCase {
 
     private final StarwarsApiGateway starwarsApiGateway;
-    private final PersonRepository personRepository;
     private final SavePeopleUseCase savePeopleUseCase;
     private final PeopleStarwarGatewayToPeopleResponseConverter peopleStarwarGatewayToPeopleResponseConverter;
-    private final PeopleEntityToPeopleResponseConverter peopleEntityToPeopleResponseConverter;
     private final SpecieStarwarGatewayToSpecieResponseConverter specieStarwarGatewayToSpecieResponseConverter;
     private final PlanetStarwarGatewayToPlanetResponseConverter planetStarwarGatewayToPlanetResponseConverter;
 
     @Override
     public Optional<PeopleStarResponse> execute(Long id) {
-        var personEntityOp = personRepository.findById(id);
-        if(personEntityOp.isPresent()) {
-            var personResponse = peopleEntityToPeopleResponseConverter.convert(personEntityOp.get());
-            return Optional.of(personResponse);
-        } else {
-            Optional<PeopleStarResponse> response = getPeopleByIdInExternalApi(id);
+        Optional<PeopleStarResponse> response = getPeopleByIdInExternalApi(id);
+        if(response.isPresent()) {
             runAsync(() -> savePeopleUseCase.execute(response.get()));
-            return response;
         }
+        return response;
     }
 
     private Optional<PeopleStarResponse> getPeopleByIdInExternalApi(Long id) {
-        var peopleStarwarGatewayResponse = starwarsApiGateway.getPeopleById(id.intValue());
+        var peopleStarwarGatewayResponse = starwarsApiGateway.getPeopleById(id);
         var peopleStarwarResponse = peopleStarwarGatewayToPeopleResponseConverter.convert(peopleStarwarGatewayResponse);
 
         if(isNull(peopleStarwarResponse)) {
@@ -60,6 +52,7 @@ public class SaveOrFindPeopleByIdUseCaseImpl implements SaveOrFindPeopleByIdUseC
 
             allOf(specieRequestAsync, planetRequestAsync);
 
+            peopleStarwarResponse.setId(id);
             peopleStarwarResponse.setSpecie(specieRequestAsync.join());
             peopleStarwarResponse.setHomeworld(planetRequestAsync.join());
 
