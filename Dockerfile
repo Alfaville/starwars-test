@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk11-openj9:jdk-11.0.10_9_openj9-0.24.0-alpine
+FROM ghcr.io/graalvm/graalvm-ce:21.1.0
 LABEL maintainer="Felipe Alfaville"
 LABEL version="0.2.0"
 
