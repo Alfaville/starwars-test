@@ -1,0 +1,39 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build-container:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build the Docker image
+      - run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+#      - name: Build and push
+#        id: docker_build
+#        uses: docker/build-push-action@v2
+#        with:
+#          context: ./
+#          file: ./Dockerfile
+#          push: true
+#          tags: pk/billing-context:latest
+
+      - name: Git Properties
+        run: |
+          echo "SHORT SHA: ${GITHUB_SHA::7}"
+          echo "SHORT REF: ${GITHUB_REF}"
+
+    # container:
+    #   image: adoptopenjdk/openjdk11-openj9:jdk-11.0.10_9_openj9-0.24.0-alpine
+    # steps:
+    #   - name: Docker log
+    #     run: |
+    #       java -version
+
+
+
