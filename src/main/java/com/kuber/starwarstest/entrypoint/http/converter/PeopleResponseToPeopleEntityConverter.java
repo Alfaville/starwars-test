@@ -17,6 +17,7 @@ public class PeopleResponseToPeopleEntityConverter implements Converter<PeopleSt
     @Override
     public PersonEntity convert(PeopleStarResponse source) {
         return PersonEntity.builder()
+                .id(source.getId())
                 .birthYear(source.getBirthYear())
                 .name(source.getName())
                 .eyeColor(source.getEyeColor())

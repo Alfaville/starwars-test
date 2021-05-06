@@ -13,6 +13,7 @@ external-api:
     urlBase: https://swapi.dev/api/
     nameService: starwarsapi
 
+#https://programmer.group/feign-call-error-failed-and-no-fallback-available.html
 hystrix:
   command:
     default:

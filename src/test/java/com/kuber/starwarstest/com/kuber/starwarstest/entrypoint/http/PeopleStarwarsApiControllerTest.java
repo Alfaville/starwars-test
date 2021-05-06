@@ -1,19 +1,26 @@
 package com.kuber.starwarstest.com.kuber.starwarstest.entrypoint.http;
 
 import com.kuber.starwarstest.com.kuber.starwarstest.MockFactory;
-import com.kuber.starwarstest.entrypoint.http.PeopleStarwarsApiController;
-import com.kuber.starwarstest.entrypoint.http.response.PaginableResponse;
-import com.kuber.starwarstest.dataprovider.api.StarwarsApiGateway;
-import com.kuber.starwarstest.dataprovider.api.response.PeopleStarGatewayResponse;
-import com.kuber.starwarstest.dataprovider.api.response.PlanetStarGatewayResponse;
-import com.kuber.starwarstest.dataprovider.api.response.SpecieStarGatewayResponse;
+import com.kuber.starwarstest.core.usecase.SavePeopleUseCase;
+import com.kuber.starwarstest.core.usecase.converter.PeopleEntityToPeopleResponseConverter;
+import com.kuber.starwarstest.core.usecase.converter.PeopleStarwarGatewayToPeopleResponseConverter;
 import com.kuber.starwarstest.core.usecase.converter.PeopleStarwarListGatewayToPeopleResponseListConverter;
 import com.kuber.starwarstest.core.usecase.converter.PlanetStarwarGatewayToPlanetResponseConverter;
 import com.kuber.starwarstest.core.usecase.converter.SpecieStarwarGatewayToSpecieResponseConverter;
 import com.kuber.starwarstest.core.usecase.impl.FindAllPeopleStarUseCaseImpl;
+import com.kuber.starwarstest.core.usecase.impl.FindPeopleByIdDbUseCaseImpl;
+import com.kuber.starwarstest.core.usecase.impl.FindPeopleByIdExternalApiUseCaseImpl;
+import com.kuber.starwarstest.dataprovider.api.StarwarsApiGateway;
+import com.kuber.starwarstest.dataprovider.api.response.PeopleStarGatewayResponse;
+import com.kuber.starwarstest.dataprovider.api.response.PlanetStarGatewayResponse;
+import com.kuber.starwarstest.dataprovider.api.response.SpecieStarGatewayResponse;
+import com.kuber.starwarstest.dataprovider.repository.PersonRepository;
+import com.kuber.starwarstest.entrypoint.http.PeopleStarwarsApiController;
+import com.kuber.starwarstest.entrypoint.http.response.PaginableResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -39,6 +46,7 @@ public class PeopleStarwarsApiControllerTest {
     MockMvc mockMvc;
     @SpyBean
     FindAllPeopleStarUseCaseImpl findAllPeopleStarUseCase;
+
     @MockBean
     StarwarsApiGateway starwarsApiGateway;
     @SpyBean
@@ -47,6 +55,22 @@ public class PeopleStarwarsApiControllerTest {
     SpecieStarwarGatewayToSpecieResponseConverter specieStarwarGatewayToSpecieResponseConverter;
     @SpyBean
     PlanetStarwarGatewayToPlanetResponseConverter planetStarwarGatewayToPlanetResponseConverter;
+
+    @SpyBean
+    @Qualifier("FindPeopleByIdExternalApiUseCaseImpl")
+    FindPeopleByIdExternalApiUseCaseImpl findPeopleByIdExternalApiUseCase;
+    @MockBean
+    SavePeopleUseCase savePeopleUseCase;
+    @SpyBean
+    PeopleStarwarGatewayToPeopleResponseConverter peopleStarwarGatewayToPeopleResponseConverter;
+
+    @SpyBean
+    @Qualifier("FindPeopleByIdDbUseCaseImpl")
+    FindPeopleByIdDbUseCaseImpl findPeopleByIdDbUseCase;
+    @MockBean
+    PersonRepository personRepository;
+    @MockBean
+    PeopleEntityToPeopleResponseConverter peopleEntityToPeopleResponseConverter;
 
     static final String GET_ALL_PEOPLE = "/swapi/v1/people";
 
