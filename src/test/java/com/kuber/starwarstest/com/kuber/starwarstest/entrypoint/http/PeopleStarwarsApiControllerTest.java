@@ -1,7 +1,7 @@
 package com.kuber.starwarstest.com.kuber.starwarstest.entrypoint.http;
 
 import com.kuber.starwarstest.com.kuber.starwarstest.MockFactory;
-import com.kuber.starwarstest.core.usecase.SavePeopleUseCase;
+import com.kuber.starwarstest.core.usecase.SaveAsyncPeopleUseCase;
 import com.kuber.starwarstest.core.usecase.converter.PeopleEntityToPeopleResponseConverter;
 import com.kuber.starwarstest.core.usecase.converter.PeopleStarwarGatewayToPeopleResponseConverter;
 import com.kuber.starwarstest.core.usecase.converter.PeopleStarwarListGatewayToPeopleResponseListConverter;
@@ -60,7 +60,7 @@ public class PeopleStarwarsApiControllerTest {
     @Qualifier("FindPeopleByIdExternalApiUseCaseImpl")
     FindPeopleByIdExternalApiUseCaseImpl findPeopleByIdExternalApiUseCase;
     @MockBean
-    SavePeopleUseCase savePeopleUseCase;
+    SaveAsyncPeopleUseCase saveAsyncPeopleUseCase;
     @SpyBean
     PeopleStarwarGatewayToPeopleResponseConverter peopleStarwarGatewayToPeopleResponseConverter;
 

@@ -29,6 +29,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-amqp'
 
 	implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-ribbon'
@@ -51,7 +52,7 @@ dependencies {
 	testImplementation ('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
-
+	testImplementation 'org.springframework.amqp:spring-rabbit-test'
 	testImplementation "org.testcontainers:postgresql:1.15.3"
 	testImplementation "org.testcontainers:mockserver"
 	testImplementation 'org.mock-server:mockserver-client-java:5.7.2'

@@ -1,7 +1,7 @@
 package com.kuber.starwarstest.core.usecase.impl;
 
 import com.kuber.starwarstest.core.usecase.FindPeopleByIdUseCase;
-import com.kuber.starwarstest.core.usecase.SavePeopleUseCase;
+import com.kuber.starwarstest.core.usecase.PutPeopleQueueUseCase;
 import com.kuber.starwarstest.core.usecase.converter.PeopleStarwarGatewayToPeopleResponseConverter;
 import com.kuber.starwarstest.core.usecase.converter.PlanetStarwarGatewayToPlanetResponseConverter;
 import com.kuber.starwarstest.core.usecase.converter.SpecieStarwarGatewayToSpecieResponseConverter;
@@ -26,7 +26,7 @@ import static java.util.concurrent.CompletableFuture.supplyAsync;
 public class FindPeopleByIdExternalApiUseCaseImpl implements FindPeopleByIdUseCase {
 
     private final StarwarsApiGateway starwarsApiGateway;
-    private final SavePeopleUseCase savePeopleUseCase;
+    private final PutPeopleQueueUseCase putPeopleQueueUseCase;
     private final PeopleStarwarGatewayToPeopleResponseConverter peopleStarwarGatewayToPeopleResponseConverter;
     private final SpecieStarwarGatewayToSpecieResponseConverter specieStarwarGatewayToSpecieResponseConverter;
     private final PlanetStarwarGatewayToPlanetResponseConverter planetStarwarGatewayToPlanetResponseConverter;
@@ -35,7 +35,7 @@ public class FindPeopleByIdExternalApiUseCaseImpl implements FindPeopleByIdUseCa
     public Optional<PeopleStarResponse> execute(Long id) {
         Optional<PeopleStarResponse> response = getPeopleByIdInExternalApi(id);
         if (response.isPresent()) {
-            runAsync(() -> savePeopleUseCase.execute(response.get()));
+            runAsync(() -> putPeopleQueueUseCase.execute(response.get()));
         }
         return response;
     }
