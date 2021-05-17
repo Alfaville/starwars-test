@@ -1,14 +1,16 @@
-FROM ghcr.io/graalvm/graalvm-ce:21.1.0
+FROM gradle:jdk11 as gradleimage
+COPY . /home/gradle/source
+WORKDIR /home/gradle/source
+RUN gradle build
+
+FROM adoptopenjdk/openjdk11-openj9:jdk-11.0.10_9_openj9-0.24.0-alpine
 LABEL maintainer="Felipe Alfaville"
 LABEL version="0.2.0"
 
-ARG JAR_FILE=build/libs/*.jar
+ARG JAR_FILE=/home/gradle/source/build/libs/*.jar
 
 WORKDIR /app
 RUN mkdir /opt/app
-COPY ${JAR_FILE} /opt/app/starwars.jar
+COPY --from=gradleimage ${JAR_FILE} /opt/app/pk-billing.jar
 
-ENTRYPOINT ["java", "-Dspring.profiles.active=local", "-jar", "/opt/app/starwars.jar"]
-
-ENV PORT 9000
-EXPOSE $PORT
+ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=local", "/opt/app/pk-billing.jar"]

@@ -9,7 +9,14 @@ spring:
     properties.hibernate.format_sql: false
   flyway:
     locations: "classpath:db/migration,classpath:db/dev"
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+    default-property-inclusion: non_null
+  application:
+    name: starwars-test
 
 external-api:
   urlBase: https://swapi.dev/api/
   nameService: starwarsapi
+
+

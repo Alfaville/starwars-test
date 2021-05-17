@@ -1,13 +1,13 @@
 plugins {
-	id 'org.springframework.boot' version '2.3.9.RELEASE'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'java'
-	id 'org.jetbrains.kotlin.jvm' version '1.4.31'
-	id 'pmd'
+	id "org.springframework.boot" version "$springVersion"
+	id "io.spring.dependency-management" version "$springDependencyManagement"
+	id "java"
+	id "org.jetbrains.kotlin.jvm" version "$kotlinVersion"
+	id "pmd"
 }
 
-group = 'com.kuber'
-version = '0.2.0'
+group = "com.kuber"
+version = "$version"
 sourceCompatibility = JavaVersion.VERSION_11
 
 configurations {
@@ -20,41 +20,36 @@ repositories {
 	mavenCentral()
 }
 
-ext {
-	set('springCloudVersion', "Hoxton.SR10")
-	set('testcontainersVersion', "1.15.2")
-}
-
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation "org.springframework.boot:spring-boot-starter-actuator"
+	implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+	implementation "org.springframework.boot:spring-boot-starter-web"
 
-	implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
-	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-ribbon'
-	implementation 'org.springframework.cloud:spring-cloud-netflix-hystrix'
-	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+	implementation "org.springframework.cloud:spring-cloud-starter-sleuth"
+	implementation "org.springframework.cloud:spring-cloud-starter-netflix-ribbon"
+	implementation "org.springframework.cloud:spring-cloud-netflix-hystrix"
+	implementation "org.springframework.cloud:spring-cloud-starter-openfeign"
 
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	compileOnly "org.projectlombok:lombok"
+	annotationProcessor "org.projectlombok:lombok"
+	developmentOnly "org.springframework.boot:spring-boot-devtools"
 
-	implementation 'org.flywaydb:flyway-core'
-	runtimeOnly 'com.h2database:h2'
-	runtimeOnly 'org.postgresql:postgresql'
+	implementation "org.flywaydb:flyway-core"
+	runtimeOnly "com.h2database:h2"
+	runtimeOnly "org.postgresql:postgresql"
 
-	implementation 'org.springdoc:springdoc-openapi-ui:1.5.5'
+	implementation "org.springdoc:springdoc-openapi-ui:$springDocVersion"
 
 	implementation "org.jetbrains.kotlin:kotlin-stdlib"
 	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 
-	testImplementation ('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	testImplementation ("org.springframework.boot:spring-boot-starter-test") {
+		exclude group: "org.junit.vintage", module: "junit-vintage-engine"
 	}
 
-	testImplementation "org.testcontainers:postgresql:1.15.3"
+	testImplementation "org.testcontainers:postgresql:$testContainerPostgresql"
 	testImplementation "org.testcontainers:mockserver"
-	testImplementation 'org.mock-server:mockserver-client-java:5.7.2'
+	testImplementation "org.mock-server:mockserver-client-java:$mockerServerClientJava"
 }
 
 dependencyManagement {
@@ -70,11 +65,10 @@ test {
 }
 
 pmd {
-	toolVersion = "6.33.0"
-//	rulesMinimumPriority = 5
+	toolVersion = "$pmdVersion"
 	consoleOutput = true
+	rulesMinimumPriority = 5
 	ruleSetFiles = files("config/custom-pmd-style.xml")
-//	ruleSets = ["category/java/errorprone.xml", "category/java/bestpractices.xml"]
 	ignoreFailures = true
 }
 
@@ -84,11 +78,11 @@ bootBuildImage {
 
 compileKotlin {
 	kotlinOptions {
-		jvmTarget = "1.8"
+		jvmTarget = "$jvmTargetVersion"
 	}
 }
 compileTestKotlin {
 	kotlinOptions {
-		jvmTarget = "1.8"
+		jvmTarget = "$jvmTargetVersion"
 	}
 }

@@ -2,6 +2,8 @@ package com.kuber.starwarstest.entrypoint.http;
 
 import com.kuber.starwarstest.core.usecase.FindAllPeopleStarUseCase;
 import com.kuber.starwarstest.core.usecase.FindPeopleByIdUseCase;
+import com.kuber.starwarstest.core.usecase.impl.FindPeopleByIdDbUseCaseImpl;
+import com.kuber.starwarstest.core.usecase.impl.FindPeopleByIdExternalApiUseCaseImpl;
 import com.kuber.starwarstest.entrypoint.http.openapi.PeopleStarwarsOpenApi;
 import com.kuber.starwarstest.entrypoint.http.response.PeopleStarResponse;
 import lombok.RequiredArgsConstructor;
@@ -22,10 +24,10 @@ import static java.util.Objects.isNull;
 
 @RestController
 @RequestMapping(path = "/swapi/v1", produces = MediaType.APPLICATION_JSON_VALUE)
-@RequiredArgsConstructor
 public class PeopleStarwarsApiController implements PeopleStarwarsOpenApi {
 
-    private final FindAllPeopleStarUseCase findAllPeopleStarUseCase;
+    @Autowired
+    private FindAllPeopleStarUseCase findAllPeopleStarUseCase;
 
     @Autowired
     @Qualifier("FindPeopleByIdDbUseCaseImpl")
@@ -34,6 +36,21 @@ public class PeopleStarwarsApiController implements PeopleStarwarsOpenApi {
     @Autowired
     @Qualifier("FindPeopleByIdExternalApiUseCaseImpl")
     private FindPeopleByIdUseCase findPeopleByIdExternalApiUseCase;
+
+
+//    private final FindAllPeopleStarUseCase findAllPeopleStarUseCase;
+//    private final FindPeopleByIdUseCase findPeopleByIdDbUseCase;
+//    private final FindPeopleByIdUseCase findPeopleByIdExternalApiUseCase;
+//
+//    public PeopleStarwarsApiController(
+//            FindAllPeopleStarUseCase findAllPeopleStarUseCase,
+//            @Qualifier("FindPeopleByIdDbUseCaseImpl") FindPeopleByIdUseCase findPeopleByIdDbUseCase,
+//            @Qualifier("FindPeopleByIdExternalApiUseCaseImpl") FindPeopleByIdUseCase findPeopleByIdExternalApiUseCase
+//    ) {
+//        this.findAllPeopleStarUseCase = findAllPeopleStarUseCase;
+//        this.findPeopleByIdDbUseCase = findPeopleByIdDbUseCase;
+//        this.findPeopleByIdExternalApiUseCase = findPeopleByIdExternalApiUseCase;
+//    }
 
     @Override
     @GetMapping(value = "/people", params = "page")

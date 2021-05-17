@@ -19,7 +19,7 @@ public class FindPeopleByIdDbUseCaseImpl implements FindPeopleByIdUseCase {
     @Override
     public Optional<PeopleStarResponse> execute(Long id) {
         var personEntityOp = personRepository.findById(id);
-        if(personEntityOp.isPresent()) {
+        if (personEntityOp.isPresent()) {
             var personResponse = peopleEntityToPeopleResponseConverter.convert(personEntityOp.get());
             return Optional.of(personResponse);
         }

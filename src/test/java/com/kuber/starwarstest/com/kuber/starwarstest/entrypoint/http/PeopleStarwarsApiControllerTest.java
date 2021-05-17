@@ -1,28 +1,26 @@
 package com.kuber.starwarstest.com.kuber.starwarstest.entrypoint.http;
 
 import com.kuber.starwarstest.com.kuber.starwarstest.MockFactory;
-import com.kuber.starwarstest.entrypoint.http.PeopleStarwarsApiController;
-import com.kuber.starwarstest.entrypoint.http.response.PaginableResponse;
-import com.kuber.starwarstest.dataprovider.api.StarwarsApiGateway;
+import com.kuber.starwarstest.core.usecase.FindAllPeopleStarUseCase;
+import com.kuber.starwarstest.core.usecase.FindPeopleByIdUseCase;
 import com.kuber.starwarstest.dataprovider.api.response.PeopleStarGatewayResponse;
-import com.kuber.starwarstest.dataprovider.api.response.PlanetStarGatewayResponse;
-import com.kuber.starwarstest.dataprovider.api.response.SpecieStarGatewayResponse;
-import com.kuber.starwarstest.core.usecase.converter.PeopleStarwarListGatewayToPeopleResponseListConverter;
-import com.kuber.starwarstest.core.usecase.converter.PlanetStarwarGatewayToPlanetResponseConverter;
-import com.kuber.starwarstest.core.usecase.converter.SpecieStarwarGatewayToSpecieResponseConverter;
-import com.kuber.starwarstest.core.usecase.impl.FindAllPeopleStarUseCaseImpl;
+import com.kuber.starwarstest.entrypoint.http.PeopleStarwarsApiController;
+import com.kuber.starwarstest.entrypoint.http.response.PeopleStarResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.net.URI;
+import java.util.Collections;
+import java.util.List;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -30,6 +28,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+
+@ExtendWith(SpringExtension.class)
 @WebMvcTest(value = PeopleStarwarsApiController.class)
 @AutoConfigureMockMvc
 @DisplayName("Starwars API People Controller Test")
@@ -37,16 +37,15 @@ public class PeopleStarwarsApiControllerTest {
 
     @Autowired
     MockMvc mockMvc;
-    @SpyBean
-    FindAllPeopleStarUseCaseImpl findAllPeopleStarUseCase;
+
     @MockBean
-    StarwarsApiGateway starwarsApiGateway;
-    @SpyBean
-    PeopleStarwarListGatewayToPeopleResponseListConverter peopleStarwarListGatewayToPeopleResponseListConverter;
-    @SpyBean
-    SpecieStarwarGatewayToSpecieResponseConverter specieStarwarGatewayToSpecieResponseConverter;
-    @SpyBean
-    PlanetStarwarGatewayToPlanetResponseConverter planetStarwarGatewayToPlanetResponseConverter;
+    FindAllPeopleStarUseCase findAllPeopleStarUseCase;
+
+    @MockBean(name = "FindPeopleByIdExternalApiUseCaseImpl")
+    FindPeopleByIdUseCase findPeopleByIdExternalApiUseCase;
+
+    @MockBean(name = "FindPeopleByIdDbUseCaseImpl")
+    FindPeopleByIdUseCase findPeopleByIdDbUseCase;
 
     static final String GET_ALL_PEOPLE = "/swapi/v1/people";
 
@@ -55,17 +54,11 @@ public class PeopleStarwarsApiControllerTest {
     void getAllPeopleByPageAndReturnSuccess() throws Exception {
         //GIVEN
         final Integer pageTwo = 2;
-        final PaginableResponse<PeopleStarGatewayResponse> responsePeopleGateway = MockFactory.getCompletePeopleGatewayApiResponde();
-        final PlanetStarGatewayResponse responsePlanetGateway = MockFactory.getPlanetGatewayApiResponde();
-        final SpecieStarGatewayResponse responseSpecieGateway = MockFactory.getSpecieGatewayApiResponde();
+        final List<PeopleStarResponse> responsePeopleGateway = MockFactory.getCompletePeopleGatewayApiResponseList();
 
         //WHEN
-        when(starwarsApiGateway.getAllPeoplePerPage(pageTwo))
+        when(findAllPeopleStarUseCase.execute(pageTwo))
                 .thenReturn(responsePeopleGateway);
-        when(starwarsApiGateway.getPlanetById(1))
-                .thenReturn(responsePlanetGateway);
-        when(starwarsApiGateway.getSpecieById(1))
-                .thenReturn(responseSpecieGateway);
 
         ResultActions resultActions = mockMvc.perform(
                 get(new URI(GET_ALL_PEOPLE + "?page=2"))
@@ -109,8 +102,8 @@ public class PeopleStarwarsApiControllerTest {
         final Integer unknowPage = 999999;
 
         //WHEN
-        when(starwarsApiGateway.getAllPeoplePerPage(unknowPage))
-                .thenReturn(new PaginableResponse<>());
+        when(findAllPeopleStarUseCase.execute(unknowPage))
+                .thenReturn(Collections.emptyList());
 
         ResultActions resultActions = mockMvc.perform(
                 get(new URI(GET_ALL_PEOPLE + "?page=999999"))

@@ -4,10 +4,15 @@ import com.kuber.starwarstest.entrypoint.http.response.PaginableResponse;
 import com.kuber.starwarstest.dataprovider.api.response.PeopleStarGatewayResponse;
 import com.kuber.starwarstest.dataprovider.api.response.PlanetStarGatewayResponse;
 import com.kuber.starwarstest.dataprovider.api.response.SpecieStarGatewayResponse;
+import com.kuber.starwarstest.entrypoint.http.response.PeopleStarResponse;
+import com.kuber.starwarstest.entrypoint.http.response.PlanetStarResponse;
+import com.kuber.starwarstest.entrypoint.http.response.SpecieStarResponse;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 public class MockFactory {
 
@@ -17,7 +22,7 @@ public class MockFactory {
     public static final String STARWARS_PLANET_API_RESPONSE = "{\"name\":\"Yavin IV\",\"rotation_period\":\"24\",\"orbital_period\":\"4818\",\"diameter\":\"10200\",\"climate\":\"temperate, tropical\",\"gravity\":\"1 standard\",\"terrain\":\"jungle, rainforests\",\"surface_water\":\"8\",\"population\":\"1000\",\"residents\":[],\"films\":[\"http://swapi.dev/api/films/1/\"],\"created\":\"2014-12-10T11:37:19.144000Z\",\"edited\":\"2014-12-20T20:58:18.421000Z\",\"url\":\"http://swapi.dev/api/planets/3/\"}";
     public static final String STARWARS_SPECIES_API_RESPONSE = "{\"name\":\"Wookie\",\"classification\":\"mammal\",\"designation\":\"sentient\",\"average_height\":\"210\",\"skin_colors\":\"gray\",\"hair_colors\":\"black, brown\",\"eye_colors\":\"blue, green, yellow, brown, golden, red\",\"average_lifespan\":\"400\",\"homeworld\":\"http://swapi.dev/api/planets/14/\",\"language\":\"Shyriiwook\",\"people\":[\"http://swapi.dev/api/people/13/\",\"http://swapi.dev/api/people/80/\"],\"films\":[\"http://swapi.dev/api/films/1/\",\"http://swapi.dev/api/films/2/\",\"http://swapi.dev/api/films/3/\",\"http://swapi.dev/api/films/6/\"],\"created\":\"2014-12-10T16:44:31.486000Z\",\"edited\":\"2014-12-20T21:36:42.142000Z\",\"url\":\"http://swapi.dev/api/species/3/\"}";
 
-    public static PaginableResponse<PeopleStarGatewayResponse> getCompletePeopleGatewayApiResponde() {
+    public static PaginableResponse<PeopleStarGatewayResponse> getCompletePeopleGatewayApiResponse() {
         var response = getPeopleGatewayApiResponde();
         response.setCount(1);
 
@@ -25,6 +30,46 @@ public class MockFactory {
         response.getResults().get(0).setSpecies(Collections.singletonList("1"));
 
         return response;
+    }
+
+    public static List<PeopleStarResponse> getCompletePeopleGatewayApiResponseList() {
+        List<PeopleStarResponse> peopleListResponse = new ArrayList<>();
+
+        peopleListResponse.add(
+                PeopleStarResponse.builder()
+                        .birthYear("19BBY")
+                        .eyeColor("blue")
+                        .gender("male")
+                        .hairColor("blond")
+                        .height("172")
+                        .mass("77")
+                        .name("Luke Skywalker")
+                        .skinColor("fair")
+                        .homeworld(
+                                PlanetStarResponse.builder()
+                                        .climate("arid")
+                                        .name("Tatooine")
+                                        .id(1)
+                                        .gravity("1 standard")
+                                        .terrain("desert")
+                                        .population("200000")
+                                .build()
+                        )
+                        .specie(
+                                SpecieStarResponse.builder()
+                                        .id(1)
+                                        .name("Human")
+                                        .classification("mammal")
+                                        .designation("sentient")
+                                        .averageHeight("180")
+                                        .averageLifespan("120")
+                                        .language("Galactic Basic")
+                                        .build()
+                        )
+                        .build()
+        );
+
+        return peopleListResponse;
     }
 
     public static PaginableResponse<PeopleStarGatewayResponse> getPeopleGatewayApiResponde() {

@@ -34,7 +34,7 @@ public class FindPeopleByIdExternalApiUseCaseImpl implements FindPeopleByIdUseCa
     @Override
     public Optional<PeopleStarResponse> execute(Long id) {
         Optional<PeopleStarResponse> response = getPeopleByIdInExternalApi(id);
-        if(response.isPresent()) {
+        if (response.isPresent()) {
             runAsync(() -> savePeopleUseCase.execute(response.get()));
         }
         return response;
@@ -44,7 +44,7 @@ public class FindPeopleByIdExternalApiUseCaseImpl implements FindPeopleByIdUseCa
         var peopleStarwarGatewayResponse = starwarsApiGateway.getPeopleById(id);
         var peopleStarwarResponse = peopleStarwarGatewayToPeopleResponseConverter.convert(peopleStarwarGatewayResponse);
 
-        if(isNull(peopleStarwarResponse)) {
+        if (isNull(peopleStarwarResponse)) {
             return Optional.empty();
         } else {
             var specieRequestAsync = getSpecieByIdAsync(peopleStarwarResponse.getSpecie().getId());
@@ -61,7 +61,7 @@ public class FindPeopleByIdExternalApiUseCaseImpl implements FindPeopleByIdUseCa
     }
 
     private CompletableFuture<SpecieStarResponse> getSpecieByIdAsync(Integer id) {
-        if(isNull(id)) {
+        if (isNull(id)) {
             return completedFuture(null);
         } else {
             return supplyAsync(() -> {
@@ -73,7 +73,7 @@ public class FindPeopleByIdExternalApiUseCaseImpl implements FindPeopleByIdUseCa
     }
 
     private CompletableFuture<PlanetStarResponse> getPlanetByIdAsync(Integer id) {
-        if(isNull(id)) {
+        if (isNull(id)) {
             return completedFuture(null);
         } else {
             return supplyAsync(() -> {
