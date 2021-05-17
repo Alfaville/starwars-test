@@ -44,7 +44,7 @@ public class FindAllPeopleStarUseCaseTest {
     public void getAllPaginablePeopleOfStarwarsApiWithSuccess() {
         Integer pageOne = 1;
         when(starwarsApiGateway.getAllPeoplePerPage(pageOne))
-                .thenReturn(MockFactory.getCompletePeopleGatewayApiResponde());
+                .thenReturn(MockFactory.getCompletePeopleGatewayApiResponse());
 
         when(starwarsApiGateway.getSpecieById(1))
                 .thenReturn(MockFactory.getSpecieGatewayApiResponde());

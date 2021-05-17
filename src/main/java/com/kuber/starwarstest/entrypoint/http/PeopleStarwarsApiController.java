@@ -2,8 +2,12 @@ package com.kuber.starwarstest.entrypoint.http;
 
 import com.kuber.starwarstest.core.usecase.FindAllPeopleStarUseCase;
 import com.kuber.starwarstest.core.usecase.FindPeopleByIdUseCase;
+import com.kuber.starwarstest.core.usecase.impl.FindPeopleByIdDbUseCaseImpl;
+import com.kuber.starwarstest.core.usecase.impl.FindPeopleByIdExternalApiUseCaseImpl;
 import com.kuber.starwarstest.entrypoint.http.openapi.PeopleStarwarsOpenApi;
 import com.kuber.starwarstest.entrypoint.http.response.PeopleStarResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,19 +26,31 @@ import static java.util.Objects.isNull;
 @RequestMapping(path = "/swapi/v1", produces = MediaType.APPLICATION_JSON_VALUE)
 public class PeopleStarwarsApiController implements PeopleStarwarsOpenApi {
 
-    private final FindAllPeopleStarUseCase findAllPeopleStarUseCase;
-    private final FindPeopleByIdUseCase findPeopleByIdDbUseCase;
-    private final FindPeopleByIdUseCase findPeopleByIdExternalApiUseCase;
+    @Autowired
+    private FindAllPeopleStarUseCase findAllPeopleStarUseCase;
 
-    public PeopleStarwarsApiController(
-            FindAllPeopleStarUseCase findAllPeopleStarUseCase,
-            @Qualifier("FindPeopleByIdDbUseCaseImpl") FindPeopleByIdUseCase findPeopleByIdDbUseCase,
-            @Qualifier("FindPeopleByIdExternalApiUseCaseImpl") FindPeopleByIdUseCase findPeopleByIdExternalApiUseCase
-    ) {
-        this.findAllPeopleStarUseCase = findAllPeopleStarUseCase;
-        this.findPeopleByIdDbUseCase = findPeopleByIdDbUseCase;
-        this.findPeopleByIdExternalApiUseCase = findPeopleByIdExternalApiUseCase;
-    }
+    @Autowired
+    @Qualifier("FindPeopleByIdDbUseCaseImpl")
+    private FindPeopleByIdUseCase findPeopleByIdDbUseCase;
+
+    @Autowired
+    @Qualifier("FindPeopleByIdExternalApiUseCaseImpl")
+    private FindPeopleByIdUseCase findPeopleByIdExternalApiUseCase;
+
+
+//    private final FindAllPeopleStarUseCase findAllPeopleStarUseCase;
+//    private final FindPeopleByIdUseCase findPeopleByIdDbUseCase;
+//    private final FindPeopleByIdUseCase findPeopleByIdExternalApiUseCase;
+//
+//    public PeopleStarwarsApiController(
+//            FindAllPeopleStarUseCase findAllPeopleStarUseCase,
+//            @Qualifier("FindPeopleByIdDbUseCaseImpl") FindPeopleByIdUseCase findPeopleByIdDbUseCase,
+//            @Qualifier("FindPeopleByIdExternalApiUseCaseImpl") FindPeopleByIdUseCase findPeopleByIdExternalApiUseCase
+//    ) {
+//        this.findAllPeopleStarUseCase = findAllPeopleStarUseCase;
+//        this.findPeopleByIdDbUseCase = findPeopleByIdDbUseCase;
+//        this.findPeopleByIdExternalApiUseCase = findPeopleByIdExternalApiUseCase;
+//    }
 
     @Override
     @GetMapping(value = "/people", params = "page")
