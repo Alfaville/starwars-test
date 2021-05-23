@@ -4,6 +4,6 @@ import com.kuber.starwarstest.entrypoint.http.response.PeopleStarResponse;
 
 public interface PutPeopleQueueUseCase {
 
-    void execute(PeopleStarResponse peopleStarResponse);
+    Boolean execute(PeopleStarResponse peopleStarResponse);
 
 }

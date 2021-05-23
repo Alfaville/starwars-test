@@ -51,6 +51,8 @@ dependencies {
 	testImplementation "org.testcontainers:postgresql:$testContainerPostgresql"
 	testImplementation "org.testcontainers:mockserver"
 	testImplementation "org.mock-server:mockserver-client-java:$mockerServerClientJava"
+	testImplementation "org.testcontainers:rabbitmq:$testcontainersRabbitMQ"
+	testImplementation 'org.awaitility:awaitility:4.0.1'
 }
 
 dependencyManagement {

@@ -19,4 +19,5 @@ external-api:
   urlBase: https://swapi.dev/api/
   nameService: starwarsapi
 
-
+queue:
+  person-service: person-queue
