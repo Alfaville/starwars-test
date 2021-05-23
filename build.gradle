@@ -52,7 +52,7 @@ dependencies {
 	testImplementation "org.testcontainers:mockserver"
 	testImplementation "org.mock-server:mockserver-client-java:$mockerServerClientJava"
 	testImplementation "org.testcontainers:rabbitmq:$testcontainersRabbitMQ"
-	testImplementation 'org.awaitility:awaitility:4.0.1'
+	testImplementation "org.awaitility:awaitility:$awaitilityVersion"
 }
 
 dependencyManagement {
