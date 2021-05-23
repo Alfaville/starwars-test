@@ -1,5 +1,7 @@
 package com.kuber.starwarstest.com.kuber.starwarstest;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kuber.starwarstest.entrypoint.http.response.PaginableResponse;
 import com.kuber.starwarstest.dataprovider.api.response.PeopleStarGatewayResponse;
 import com.kuber.starwarstest.dataprovider.api.response.PlanetStarGatewayResponse;
@@ -30,6 +32,20 @@ public class MockFactory {
         response.getResults().get(0).setSpecies(Collections.singletonList("1"));
 
         return response;
+    }
+
+    public static String getMessagePeopleResponse() {
+        try {
+            return new ObjectMapper().writeValueAsString(getCompletePeopleGatewayApiResponseList().get(0));
+        } catch (JsonProcessingException e) {
+            return null;
+        }
+    }
+
+    public static PeopleStarResponse getCompletePeopleResponse() {
+        PeopleStarResponse personResponse = getCompletePeopleGatewayApiResponseList().get(0);
+        personResponse.setId(3L);
+        return personResponse;
     }
 
     public static List<PeopleStarResponse> getCompletePeopleGatewayApiResponseList() {

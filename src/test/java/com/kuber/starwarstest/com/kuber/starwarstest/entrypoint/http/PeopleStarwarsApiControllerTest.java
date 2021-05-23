@@ -3,7 +3,6 @@ package com.kuber.starwarstest.com.kuber.starwarstest.entrypoint.http;
 import com.kuber.starwarstest.com.kuber.starwarstest.MockFactory;
 import com.kuber.starwarstest.core.usecase.FindAllPeopleStarUseCase;
 import com.kuber.starwarstest.core.usecase.FindPeopleByIdUseCase;
-import com.kuber.starwarstest.dataprovider.api.response.PeopleStarGatewayResponse;
 import com.kuber.starwarstest.entrypoint.http.PeopleStarwarsApiController;
 import com.kuber.starwarstest.entrypoint.http.response.PeopleStarResponse;
 import org.junit.jupiter.api.DisplayName;
